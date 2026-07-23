@@ -223,10 +223,16 @@
         label: "Outcome",
         cls: "outcome",
         sortVal: (r) => (r.determinationOutcome || "").toLowerCase(),
-        cell: (r) =>
-          r.determinationOutcome
-            ? esc(r.determinationOutcome)
-            : '<span class="dash">—</span>',
+        cell: (r) => {
+          const o = r.determinationOutcome;
+          if (!o) return '<span class="dash">—</span>';
+          const lo = o.toLowerCase();
+          // green if approved, red if not approved, neutral otherwise
+          let cls = "yn--na";
+          if (lo.includes("not approved")) cls = "yn--no";
+          else if (lo.includes("approved")) cls = "yn--yes";
+          return `<span class="yn ${cls}">${esc(o)}</span>`;
+        },
       },
       {
         key: "status",

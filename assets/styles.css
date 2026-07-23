@@ -395,6 +395,11 @@ td.center {
   color: var(--no-ink);
   border-color: var(--no-line);
 }
+.yn--na {
+  background: #eef0f1;
+  color: #5b6b78;
+  border-color: #dce1e4;
+}
 
 /* Status pills ------------------------------------------------------------ */
 .pill {
