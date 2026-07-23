@@ -566,3 +566,39 @@
 
   document.addEventListener("DOMContentLoaded", boot);
 })();
+
+/* Table zoom control — shrinks the tables so more columns/rows fit.
+   100% = current size (max); zooms out to 50%. */
+(function () {
+  "use strict";
+  var MIN = 0.5,
+    MAX = 1,
+    STEP = 0.1,
+    z = MAX;
+
+  function apply() {
+    document.documentElement.style.setProperty("--table-zoom", String(z));
+    var lvl = document.getElementById("zoom-level");
+    if (lvl) lvl.textContent = Math.round(z * 100) + "%";
+    var zin = document.getElementById("zoom-in");
+    var zout = document.getElementById("zoom-out");
+    if (zin) zin.disabled = z >= MAX - 0.001;
+    if (zout) zout.disabled = z <= MIN + 0.001;
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var zin = document.getElementById("zoom-in");
+    var zout = document.getElementById("zoom-out");
+    if (zout)
+      zout.addEventListener("click", function () {
+        z = Math.max(MIN, Math.round((z - STEP) * 100) / 100);
+        apply();
+      });
+    if (zin)
+      zin.addEventListener("click", function () {
+        z = Math.min(MAX, Math.round((z + STEP) * 100) / 100);
+        apply();
+      });
+    apply();
+  });
+})();

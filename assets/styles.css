@@ -306,6 +306,7 @@ a:hover {
   box-shadow: var(--shadow);
   overflow: auto;
   max-height: 78vh;
+  zoom: var(--table-zoom, 1); /* driven by the floating zoom control */
 }
 table {
   width: 100%;
@@ -471,6 +472,65 @@ td.center {
   padding: 40px 0;
   text-align: center;
   color: var(--muted);
+}
+
+/* Floating table-zoom control -------------------------------------------- */
+.zoom-control {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--gray);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  box-shadow: 0 4px 16px rgba(30, 20, 10, 0.28);
+}
+.zoom-ico {
+  font-size: 14px;
+  line-height: 1;
+}
+.zoom-level {
+  min-width: 40px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.zoom-btn {
+  width: 27px;
+  height: 27px;
+  flex: 0 0 27px;
+  border: none;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zoom-btn:hover {
+  background: var(--orange-deep);
+}
+.zoom-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+.zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+@media print {
+  .zoom-control {
+    display: none;
+  }
 }
 
 /* Responsive -------------------------------------------------------------- */
