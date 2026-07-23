@@ -1,6 +1,10 @@
 /* ACCC Acquisitions Register mirror — front-end
    Reads data.json (written by the scheduled scraper) and renders two sections:
-   Phase 1 & 2 Notifications, and Waivers. No framework, no build step. */
+   Phase 1 & 2 Notifications, and Waivers. No framework, no build step.
+
+   The summary stat rows double as filters: click a status / stage / outcome to
+   filter the table below. Multiple selections combine (same category = OR,
+   across categories = AND), and combine with the search box too. */
 
 (function () {
   "use strict";
@@ -18,7 +22,8 @@
     return `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}`;
   }
 
-  function fmtTimestampSydney(iso) {
+  // e.g. "Thu, 23 July 2026, 10:54 am AEST"
+  function fmtFullSydney(iso) {
     const d = new Date(iso);
     if (isNaN(d)) return iso;
     try {
@@ -26,7 +31,7 @@
         timeZone: "Australia/Sydney",
         weekday: "short",
         day: "numeric",
-        month: "short",
+        month: "long",
         year: "numeric",
         hour: "numeric",
         minute: "2-digit",
@@ -34,21 +39,6 @@
       }).format(d);
     } catch (e) {
       return d.toISOString();
-    }
-  }
-
-  function fmtDateShortSydney(iso) {
-    const d = new Date(iso);
-    if (isNaN(d)) return iso;
-    try {
-      return new Intl.DateTimeFormat("en-AU", {
-        timeZone: "Australia/Sydney",
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }).format(d);
-    } catch (e) {
-      return iso;
     }
   }
 
@@ -112,9 +102,7 @@
         const b = stageBucket(r.stage);
         if (b in stats.stage) stats.stage[b] += 1;
       }
-      // Outcome tally: every completed matter that has a recorded outcome,
-      // even the few where the ACCC page omits a determination date (those
-      // still can't have a computed duration — see below).
+      // Outcome tally: every completed matter that has a recorded outcome.
       if (r.status === "Assessment completed" && r.determinationOutcome) {
         const o = r.determinationOutcome;
         stats.outcome[o] = (stats.outcome[o] || 0) + 1;
@@ -132,45 +120,56 @@
     return stats;
   }
 
-  function statRow(k, v) {
+  // ---- stat cards (rows are clickable filters) ---------------------------
+  function plainRow(k, v) {
     return `<div class="statrow"><span class="k">${esc(k)}</span><span class="v">${esc(
       v
     )}</span></div>`;
   }
 
-  function renderStats(stats, isNotification, headlineLabel, asatDate) {
+  function facetRow(facet, value, label, count) {
+    return `<div class="statrow selectable" role="button" tabindex="0" aria-pressed="false" data-facet="${esc(
+      facet
+    )}" data-value="${esc(value)}"><span class="k">${esc(
+      label
+    )}</span><span class="v">${esc(count)}</span></div>`;
+  }
+
+  function renderStats(stats, isNotification, headlineLabel, stamp) {
     const groups = [];
 
     groups.push(`
       <div class="statgroup statgroup--headline">
         <h3>${esc(headlineLabel)}</h3>
         <div class="big">${stats.total}</div>
-        <div class="sub">as at COB ${esc(asatDate)}</div>
+        <div class="sub">as at ${esc(stamp)}</div>
       </div>`);
 
     groups.push(`
       <div class="statgroup">
         <h3>By status</h3>
-        ${statRow("Under assessment", stats.status["Under assessment"] || 0)}
-        ${statRow("Completed", stats.status["Assessment completed"] || 0)}
-        ${statRow("Ceased", stats.status["Assessment ceased"] || 0)}
-        ${statRow("Suspended", stats.status["Assessment suspended"] || 0)}
+        ${facetRow("status", "Under assessment", "Under assessment", stats.status["Under assessment"] || 0)}
+        ${facetRow("status", "Assessment completed", "Completed", stats.status["Assessment completed"] || 0)}
+        ${facetRow("status", "Assessment ceased", "Ceased", stats.status["Assessment ceased"] || 0)}
+        ${facetRow("status", "Assessment suspended", "Suspended", stats.status["Assessment suspended"] || 0)}
       </div>`);
 
     if (isNotification) {
       groups.push(`
         <div class="statgroup">
           <h3>By stage</h3>
-          ${statRow("Phase 1", stats.stage["Phase 1"])}
-          ${statRow("Phase 2", stats.stage["Phase 2"])}
-          ${statRow("Public benefit", stats.stage["Public benefit"])}
+          ${facetRow("stage", "Phase 1", "Phase 1", stats.stage["Phase 1"])}
+          ${facetRow("stage", "Phase 2", "Phase 2", stats.stage["Phase 2"])}
+          ${facetRow("stage", "Public benefit", "Public benefit", stats.stage["Public benefit"])}
         </div>`);
     }
 
     const outcomeKeys = Object.keys(stats.outcome).sort();
     const outcomeRows = outcomeKeys.length
-      ? outcomeKeys.map((k) => statRow(k, stats.outcome[k])).join("")
-      : `<div class="statrow"><span class="k">No completed matters yet</span><span class="v">—</span></div>`;
+      ? outcomeKeys
+          .map((k) => facetRow("outcome", k, k, stats.outcome[k]))
+          .join("")
+      : plainRow("No completed matters yet", "—");
     groups.push(`
       <div class="statgroup">
         <h3>Completed — outcome</h3>
@@ -180,17 +179,15 @@
     groups.push(`
       <div class="statgroup">
         <h3>Completed — duration (business days)</h3>
-        ${statRow("Average", stats.avgDuration == null ? "—" : stats.avgDuration)}
-        ${statRow("Median", stats.medianDuration == null ? "—" : stats.medianDuration)}
-        ${statRow("Sample (n)", stats.durations.length)}
+        ${plainRow("Average", stats.avgDuration == null ? "—" : stats.avgDuration)}
+        ${plainRow("Median", stats.medianDuration == null ? "—" : stats.medianDuration)}
+        ${plainRow("Sample (n)", stats.durations.length)}
       </div>`);
 
     return `<div class="stats">${groups.join("")}</div>`;
   }
 
-  // ---- table -------------------------------------------------------------
-  // Column definitions per section. `key` drives sorting; `sortVal` extracts
-  // a comparable value; `cell` renders the HTML.
+  // ---- table columns -----------------------------------------------------
   function columns(isNotification) {
     const cols = [
       {
@@ -213,11 +210,24 @@
         },
       },
       {
-        key: "caseNumber",
-        label: "Case no.",
-        cls: "casenum",
-        sortVal: (r) => (r.caseNumber || "").toLowerCase(),
-        cell: (r) => esc(r.caseNumber || "—"),
+        key: "reviewComplete",
+        label: "Review completed?",
+        cls: "center",
+        sortVal: (r) => (r.reviewComplete ? 1 : 0),
+        cell: (r) =>
+          r.reviewComplete
+            ? '<span class="yn yn--yes">Yes</span>'
+            : '<span class="yn yn--no">No</span>',
+      },
+      {
+        key: "determinationOutcome",
+        label: "Outcome",
+        cls: "outcome",
+        sortVal: (r) => (r.determinationOutcome || "").toLowerCase(),
+        cell: (r) =>
+          r.determinationOutcome
+            ? esc(r.determinationOutcome)
+            : '<span class="dash">—</span>',
       },
       {
         key: "status",
@@ -244,17 +254,14 @@
         key: "effectiveDate",
         label: "Effective date",
         sortVal: (r) => r.effectiveDate || "",
-        cell: (r) =>
-          fmtDate(r.effectiveDate) ||
-          '<span class="dash">—</span>',
+        cell: (r) => fmtDate(r.effectiveDate) || '<span class="dash">—</span>',
       },
       {
         key: "determinationDate",
         label: "Determination date",
         sortVal: (r) => r.determinationDate || "",
         cell: (r) =>
-          fmtDate(r.determinationDate) ||
-          '<span class="dash">—</span>',
+          fmtDate(r.determinationDate) || '<span class="dash">—</span>',
       },
       {
         key: "durationBusinessDays",
@@ -269,25 +276,48 @@
           isNum(r.durationBusinessDays)
             ? String(r.durationBusinessDays)
             : '<span class="dash">—</span>',
-      },
-      {
-        key: "determinationOutcome",
-        label: "Outcome",
-        cls: "outcome",
-        sortVal: (r) => (r.determinationOutcome || "").toLowerCase(),
-        cell: (r) =>
-          r.determinationOutcome
-            ? esc(r.determinationOutcome)
-            : '<span class="dash">—</span>',
       }
     );
 
     return cols;
   }
 
-  function renderTable(container, records, isNotification) {
+  // ---- filtering ---------------------------------------------------------
+  function recordMatches(r, filters) {
+    if (filters.query) {
+      const hay = [
+        r.caseTitle,
+        r.caseNumber,
+        r.status,
+        r.stage,
+        r.determinationOutcome,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      if (!hay.includes(filters.query)) return false;
+    }
+    if (filters.status.size && !filters.status.has(r.status)) return false;
+    if (filters.stage.size && !filters.stage.has(stageBucket(r.stage)))
+      return false;
+    if (filters.outcome.size && !filters.outcome.has(r.determinationOutcome))
+      return false;
+    return true;
+  }
+
+  function anyActive(filters) {
+    return (
+      filters.query ||
+      filters.status.size ||
+      filters.stage.size ||
+      filters.outcome.size
+    );
+  }
+
+  // ---- table -------------------------------------------------------------
+  function renderTable(sectionEl, host, records, isNotification, filters) {
     const cols = columns(isNotification);
-    const state = { sortKey: "effectiveDate", dir: -1, query: "" };
+    const state = { sortKey: "effectiveDate", dir: -1 };
 
     const thead = cols
       .map(
@@ -298,13 +328,14 @@
       )
       .join("");
 
-    container.innerHTML = `
+    host.innerHTML = `
       <div class="toolbar">
         <div class="search">
           <input type="search" placeholder="Filter ${
             isNotification ? "notifications" : "waivers"
           }…" aria-label="Filter table" />
         </div>
+        <button type="button" class="clear-filters" hidden>Clear filters ✕</button>
         <div class="count"></div>
       </div>
       <div class="table-wrap">
@@ -314,62 +345,46 @@
         </table>
       </div>`;
 
-    const tbody = container.querySelector("tbody");
-    const ths = container.querySelectorAll("thead th");
-    const countEl = container.querySelector(".count");
-    const searchEl = container.querySelector('input[type="search"]');
+    const tbody = host.querySelector("tbody");
+    const ths = host.querySelectorAll("thead th");
+    const countEl = host.querySelector(".count");
+    const searchEl = host.querySelector('input[type="search"]');
+    const clearEl = host.querySelector(".clear-filters");
 
     function filtered() {
-      const q = state.query.trim().toLowerCase();
-      let rows = records;
-      if (q) {
-        rows = records.filter((r) =>
-          [
-            r.caseTitle,
-            r.caseNumber,
-            r.status,
-            r.stage,
-            r.determinationOutcome,
-          ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase()
-            .includes(q)
-        );
-      }
+      let rows = records.filter((r) => recordMatches(r, filters));
       const col = cols.find((c) => c.key === state.sortKey) || cols[0];
       rows = rows.slice().sort((a, b) => {
         const va = col.sortVal(a);
         const vb = col.sortVal(b);
         if (va < vb) return -1 * state.dir;
         if (va > vb) return 1 * state.dir;
-        // tie-break by title for stability
         return (a.caseTitle || "").localeCompare(b.caseTitle || "");
       });
       return rows;
     }
 
-    function draw() {
+    function redraw() {
       const rows = filtered();
       countEl.textContent = `${rows.length} of ${records.length}`;
+      clearEl.hidden = !anyActive(filters);
       if (!rows.length) {
         tbody.innerHTML = `<tr><td class="empty" colspan="${cols.length}">No matching records.</td></tr>`;
-        return;
+      } else {
+        tbody.innerHTML = rows
+          .map(
+            (r) =>
+              "<tr>" +
+              cols
+                .map(
+                  (c) =>
+                    `<td${c.cls ? ` class="${c.cls}"` : ""}>${c.cell(r)}</td>`
+                )
+                .join("") +
+              "</tr>"
+          )
+          .join("");
       }
-      tbody.innerHTML = rows
-        .map(
-          (r) =>
-            "<tr>" +
-            cols
-              .map(
-                (c) =>
-                  `<td${c.cls ? ` class="${c.cls}"` : ""}>${c.cell(r)}</td>`
-              )
-              .join("") +
-            "</tr>"
-        )
-        .join("");
-      // reflect sort state on headers
       ths.forEach((th) => {
         const c = cols[Number(th.dataset.i)];
         th.setAttribute(
@@ -390,10 +405,9 @@
           state.dir *= -1;
         } else {
           state.sortKey = c.key;
-          // dates & numbers default to descending (newest / largest first)
           state.dir = c.num || c.key.endsWith("Date") ? -1 : 1;
         }
-        draw();
+        redraw();
       });
     });
 
@@ -401,27 +415,47 @@
     searchEl.addEventListener("input", () => {
       clearTimeout(t);
       t = setTimeout(() => {
-        state.query = searchEl.value;
-        draw();
+        filters.query = searchEl.value.trim().toLowerCase();
+        redraw();
       }, 120);
     });
 
-    draw();
+    clearEl.addEventListener("click", () => {
+      filters.status.clear();
+      filters.stage.clear();
+      filters.outcome.clear();
+      filters.query = "";
+      searchEl.value = "";
+      sectionEl.querySelectorAll(".statrow.selectable.active").forEach((el) => {
+        el.classList.remove("active");
+        el.setAttribute("aria-pressed", "false");
+      });
+      redraw();
+    });
+
+    redraw();
+    return { redraw };
   }
 
   // ---- section assembly --------------------------------------------------
   function renderSection(el, opts) {
     const { title, headlineLabel, records, isNotification, generatedAt } = opts;
-    const asatDate = fmtDateShortSydney(generatedAt);
+    const stamp = fmtFullSydney(generatedAt);
     const stats = computeStats(records, isNotification);
+    const filters = {
+      status: new Set(),
+      stage: new Set(),
+      outcome: new Set(),
+      query: "",
+    };
 
     const head = document.createElement("div");
     head.className = "section-head";
     head.innerHTML = `
       <h2>${esc(title)}</h2>
-      <div class="headline">Total <strong>${esc(headlineLabel)}</strong> as at COB ${esc(
-      asatDate
-    )}: <strong>${records.length}</strong></div>`;
+      <div class="headline">Total <strong>${esc(
+        headlineLabel
+      )}</strong> as at ${esc(stamp)}: <strong>${records.length}</strong></div>`;
     el.appendChild(head);
 
     const statsWrap = document.createElement("div");
@@ -429,18 +463,39 @@
       stats,
       isNotification,
       "Total " + headlineLabel,
-      asatDate
+      stamp
     );
     el.appendChild(statsWrap.firstElementChild);
 
     const tableHost = document.createElement("div");
     el.appendChild(tableHost);
-    renderTable(tableHost, records, isNotification);
+    const table = renderTable(el, tableHost, records, isNotification, filters);
+
+    // Wire the clickable stat rows to the table's filter.
+    el.querySelectorAll(".statrow.selectable").forEach((rowEl) => {
+      const toggle = () => {
+        const set = filters[rowEl.dataset.facet];
+        const value = rowEl.dataset.value;
+        if (set.has(value)) set.delete(value);
+        else set.add(value);
+        const on = set.has(value);
+        rowEl.classList.toggle("active", on);
+        rowEl.setAttribute("aria-pressed", on ? "true" : "false");
+        table.redraw();
+      };
+      rowEl.addEventListener("click", toggle);
+      rowEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
 
     const asat = document.createElement("p");
     asat.className = "asat";
     asat.innerHTML = `Data as at <strong>${esc(
-      fmtTimestampSydney(generatedAt)
+      stamp
     )}</strong> (Australia/Sydney).`;
     el.appendChild(asat);
   }

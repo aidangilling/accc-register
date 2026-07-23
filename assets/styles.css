@@ -1,25 +1,30 @@
 /* ACCC Acquisitions Register mirror — styles
-   Restrained, professional palette suitable for a law firm. */
+   Palette: orange (dominant), white, dark gray (secondary). */
 
 :root {
-  --navy: #0b3d5c;
-  --navy-700: #0d4c73;
-  --ink: #1a2733;
-  --muted: #5b6b78;
-  --line: #e2e8ee;
-  --line-strong: #cdd8e1;
-  --bg: #f6f8fa;
+  --orange: #ef8645;
+  --orange-deep: #e06a2c;
+  --orange-soft: #fdeee2;
+  --orange-line: #f0c3a2;
+  --orange-text: #b7541a; /* readable orange for links/accents on white */
+
+  --gray: #333333;
+  --ink: #2b2b2b;
+  --muted: #6b6b6b;
+  --line: #e6e3e0;
+  --line-strong: #d3cec9;
+  --bg: #f6f4f2;
   --card: #ffffff;
-  --accent: #0d4c73;
-  --amber-bg: #fff7e6;
-  --amber-line: #f0d08a;
-  --amber-ink: #7a5a12;
-  --red-bg: #fdecec;
-  --red-line: #f0b4b4;
-  --red-ink: #8a2020;
-  --ok: #1c7a4a;
-  --shadow: 0 1px 2px rgba(16, 40, 60, 0.05),
-    0 6px 20px rgba(16, 40, 60, 0.06);
+
+  --yes-bg: #e7f5ec;
+  --yes-ink: #1c7a4a;
+  --yes-line: #bfe4cd;
+  --no-bg: #fdeaea;
+  --no-ink: #b3261e;
+  --no-line: #f2bdbb;
+
+  --shadow: 0 1px 2px rgba(40, 30, 20, 0.05),
+    0 6px 20px rgba(40, 30, 20, 0.07);
   --radius: 10px;
   --sans: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial,
     sans-serif;
@@ -29,7 +34,6 @@
 * {
   box-sizing: border-box;
 }
-
 html {
   -webkit-text-size-adjust: 100%;
 }
@@ -44,7 +48,7 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--orange-text);
   text-decoration: none;
 }
 a:hover {
@@ -59,35 +63,38 @@ a:hover {
 
 /* Header ------------------------------------------------------------------ */
 .site-header {
-  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-700) 100%);
-  color: #eaf2f8;
+  background: linear-gradient(155deg, var(--orange) 0%, var(--orange-deep) 100%);
+  color: #2a1a0d;
   padding: 40px 0 34px;
 }
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 12px;
-  font-weight: 600;
-  color: #9fc3db;
+  font-weight: 700;
+  color: #6d3410;
   margin: 0 0 6px;
 }
 .site-header h1 {
   font-family: var(--serif);
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(26px, 4vw, 38px);
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   letter-spacing: 0.2px;
+  color: #2a1a0d;
 }
 .lede {
   margin: 0;
-  max-width: 62ch;
-  color: #cfe0ec;
-  font-size: 15.5px;
+  max-width: 64ch;
+  color: #3a2513;
+  font-size: 16.5px;
+  font-weight: 500;
 }
 .lede a {
-  color: #ffffff;
+  color: #23150a;
   text-decoration: underline;
   text-underline-offset: 2px;
+  font-weight: 600;
 }
 
 /* Banners ----------------------------------------------------------------- */
@@ -96,14 +103,14 @@ a:hover {
   padding: 12px 16px;
   border-radius: var(--radius);
   font-size: 14px;
-  background: var(--amber-bg);
-  border: 1px solid var(--amber-line);
-  color: var(--amber-ink);
+  background: var(--orange-soft);
+  border: 1px solid var(--orange-line);
+  color: #7a4a1c;
 }
 .banner--error {
-  background: var(--red-bg);
-  border-color: var(--red-line);
-  color: var(--red-ink);
+  background: var(--no-bg);
+  border-color: var(--no-line);
+  color: var(--no-ink);
 }
 
 /* Sections ---------------------------------------------------------------- */
@@ -117,13 +124,15 @@ a:hover {
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 14px;
+  border-bottom: 3px solid var(--orange);
+  padding-bottom: 10px;
 }
 .section-head h2 {
   font-family: var(--serif);
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0;
-  color: var(--navy);
+  color: var(--gray);
 }
 .headline {
   font-size: 14px;
@@ -136,7 +145,7 @@ a:hover {
 /* Summary stat cards ------------------------------------------------------ */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   margin-bottom: 18px;
 }
@@ -160,10 +169,12 @@ a:hover {
   justify-content: space-between;
   align-items: baseline;
   gap: 10px;
-  padding: 3px 0;
+  padding: 4px 6px;
+  margin: 0 -6px;
   border-top: 1px dotted var(--line);
+  border-radius: 6px;
 }
-.statrow:first-of-type {
+.statgroup .statrow:first-of-type {
   border-top: none;
 }
 .statrow .k {
@@ -172,26 +183,70 @@ a:hover {
 }
 .statrow .v {
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
+  color: var(--ink);
 }
-.statgroup--headline {
-  background: var(--navy);
+
+/* Clickable (filter) stat rows */
+.statrow.selectable {
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.statrow.selectable:hover {
+  background: var(--orange-soft);
+}
+.statrow.selectable:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 1px;
+}
+.statrow.selectable::before {
+  content: "";
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  align-self: center;
+  margin-right: 8px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 4px;
+  background: #fff;
+  transition: all 0.12s ease;
+}
+.statrow.selectable .k {
+  flex: 1;
+}
+.statrow.selectable.active {
+  background: var(--orange);
+}
+.statrow.selectable.active .k,
+.statrow.selectable.active .v {
   color: #fff;
-  border-color: var(--navy);
+}
+.statrow.selectable.active::before {
+  background: #fff;
+  border-color: #fff;
+  /* small check mark */
+  box-shadow: inset 0 0 0 2px var(--orange);
+}
+
+.statgroup--headline {
+  background: var(--gray);
+  color: #fff;
+  border-color: var(--gray);
 }
 .statgroup--headline h3 {
-  color: #9fc3db;
+  color: #d7b49b;
 }
 .statgroup--headline .big {
   font-size: 34px;
-  font-weight: 700;
+  font-weight: 800;
   font-family: var(--serif);
   line-height: 1.1;
+  color: var(--orange);
 }
 .statgroup--headline .sub {
-  color: #cfe0ec;
-  font-size: 12.5px;
+  color: #cfcac6;
+  font-size: 12px;
   margin-top: 4px;
 }
 
@@ -204,7 +259,7 @@ a:hover {
   margin-bottom: 10px;
 }
 .search {
-  flex: 1 1 260px;
+  flex: 1 1 240px;
   min-width: 0;
 }
 .search input {
@@ -216,9 +271,24 @@ a:hover {
   background: #fff;
 }
 .search input:focus {
-  outline: 2px solid var(--navy-700);
+  outline: 2px solid var(--orange);
   outline-offset: 1px;
-  border-color: var(--navy-700);
+  border-color: var(--orange);
+}
+.clear-filters {
+  border: 1px solid var(--orange-line);
+  background: var(--orange-soft);
+  color: var(--orange-text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.clear-filters:hover {
+  background: #fbe1cd;
 }
 .count {
   font-size: 13px;
@@ -245,29 +315,26 @@ thead th {
   position: sticky;
   top: 0;
   z-index: 2;
-  background: #f0f4f7;
+  background: var(--gray);
+  color: #fff;
   text-align: left;
   font-weight: 600;
-  color: var(--navy);
   padding: 11px 14px;
-  border-bottom: 1px solid var(--line-strong);
+  border-bottom: 2px solid var(--orange);
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
 }
-thead th.no-sort {
-  cursor: default;
-}
 thead th .arrow {
-  color: var(--muted);
+  color: #b7b2ad;
   font-size: 10px;
   margin-left: 5px;
-  opacity: 0.4;
+  opacity: 0.5;
 }
 thead th[aria-sort="ascending"] .arrow,
 thead th[aria-sort="descending"] .arrow {
   opacity: 1;
-  color: var(--navy);
+  color: var(--orange);
 }
 tbody td {
   padding: 10px 14px;
@@ -278,11 +345,14 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 tbody tr:hover {
-  background: #f7fafc;
+  background: #fbf6f2;
 }
 td.num {
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+td.center {
+  text-align: center;
 }
 .title-cell {
   min-width: 210px;
@@ -294,7 +364,8 @@ td.num {
   color: var(--muted);
 }
 .dash {
-  color: var(--line-strong);
+  color: var(--muted);
+  font-weight: 600;
 }
 .empty {
   padding: 26px 14px;
@@ -302,7 +373,27 @@ td.num {
   color: var(--muted);
 }
 
-/* Status + outcome pills -------------------------------------------------- */
+/* Yes / No (review completed) -------------------------------------------- */
+.yn {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+.yn--yes {
+  background: var(--yes-bg);
+  color: var(--yes-ink);
+  border-color: var(--yes-line);
+}
+.yn--no {
+  background: var(--no-bg);
+  color: var(--no-ink);
+  border-color: var(--no-line);
+}
+
+/* Status pills ------------------------------------------------------------ */
 .pill {
   display: inline-block;
   padding: 2px 9px;
@@ -313,14 +404,14 @@ td.num {
   border: 1px solid transparent;
 }
 .pill--under {
-  background: #eef4fb;
-  color: #1c4e80;
-  border-color: #d3e3f4;
+  background: var(--orange-soft);
+  color: var(--orange-text);
+  border-color: var(--orange-line);
 }
 .pill--completed {
-  background: #e9f6ef;
-  color: var(--ok);
-  border-color: #c4e6d3;
+  background: #eef0f1;
+  color: #41494f;
+  border-color: #d9dee1;
 }
 .pill--ceased {
   background: #f3eef2;
@@ -371,14 +462,7 @@ td.num {
   font-size: 13px;
 }
 .site-footer p {
-  margin: 0 0 8px;
-  max-width: 80ch;
-}
-.site-footer .fine {
-  font-size: 12.5px;
-}
-.site-footer .tag--manual {
-  margin-left: 0;
+  margin: 0;
 }
 
 .loading {

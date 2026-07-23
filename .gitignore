@@ -2,5 +2,8 @@ node_modules/
 npm-debug.log*
 .DS_Store
 *.xlsx
+*.jpeg
+*.jpg
+*.png
 scratchpad/
 .claude/

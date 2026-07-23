@@ -140,6 +140,29 @@ function parseListing(html) {
   return records;
 }
 
+/**
+ * Fallback: some completed matters don't populate the "Determination
+ * publication date" field, but the date is present in the events timeline as a
+ * "Phase 1/Phase 2 determination" row. Take the latest such event's date.
+ * (We exclude "…determination period" extension notices, which aren't the
+ * determination itself.)
+ */
+function determinationDateFromEvents($) {
+  const dates = [];
+  $(".field--name-field-acccgov-merger-events table tbody tr").each((_, tr) => {
+    const label = clean($(tr).find("td").eq(1).text()).toLowerCase();
+    if (!label.includes("determination")) return;
+    if (label.includes("period") || label.includes("extend")) return;
+    const dt = $(tr)
+      .find("td.acccgov-timeline__date time[datetime]")
+      .attr("datetime");
+    if (dt) dates.push(dt.slice(0, 10));
+  });
+  if (!dates.length) return null;
+  dates.sort();
+  return dates[dates.length - 1]; // latest determination-related event
+}
+
 /** Parse a case detail page for the determination date + outcome. */
 function parseDetail(html) {
   const $ = load(html);
@@ -152,7 +175,10 @@ function parseDetail(html) {
     ".field--name-field-acccgov-pub-reg-end-date time[datetime]"
   ).first();
   const dt = t.attr("datetime");
-  const determinationDate = dt ? dt.slice(0, 10) : null;
+  // Primary source: the dedicated field. Fallback: the events timeline.
+  const determinationDate = dt
+    ? dt.slice(0, 10)
+    : determinationDateFromEvents($);
   return {
     determinationOutcome: outcome || null,
     determinationDate: determinationDate || null,
