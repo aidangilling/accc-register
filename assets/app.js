@@ -263,6 +263,13 @@
           fmtDate(r.determinationDate) || '<span class="dash">—</span>',
       },
       {
+        key: "publicationDate",
+        label: "Determination Publication Date",
+        sortVal: (r) => r.publicationDate || "",
+        cell: (r) =>
+          fmtDate(r.publicationDate) || '<span class="dash">—</span>',
+      },
+      {
         key: "durationBusinessDays",
         label: "Duration (Bus. Days)",
         cls: "num",

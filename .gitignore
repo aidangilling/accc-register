@@ -2,8 +2,10 @@ node_modules/
 npm-debug.log*
 .DS_Store
 *.xlsx
+*.docx
 *.jpeg
 *.jpg
 *.png
+ACCC Media Releases/
 scratchpad/
 .claude/

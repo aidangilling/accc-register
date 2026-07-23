@@ -1,0 +1,1690 @@
+{
+ "MN-01016": {
+  "determinationDate": "2025-09-05",
+  "source": "excel"
+ },
+ "MN-01017": {
+  "determinationDate": "2025-08-29",
+  "source": "excel"
+ },
+ "MN-01019": {
+  "determinationDate": "2026-06-02",
+  "source": "pdf-filename"
+ },
+ "MN-01031": {
+  "determinationDate": "2025-11-25",
+  "source": "excel"
+ },
+ "MN-01035": {
+  "determinationDate": "2025-11-18",
+  "source": "excel"
+ },
+ "MN-01037": {
+  "determinationDate": "2025-11-18",
+  "source": "excel"
+ },
+ "MN-01058": {
+  "determinationDate": "2025-12-18",
+  "source": "excel"
+ },
+ "MN-01061": {
+  "determinationDate": "2025-12-04",
+  "source": "excel"
+ },
+ "MN-01064": {
+  "determinationDate": "2025-12-18",
+  "source": "excel"
+ },
+ "MN-01068": {
+  "determinationDate": "2026-06-30",
+  "source": "pdf-filename"
+ },
+ "MN-01069": {
+  "determinationDate": "2026-01-27",
+  "source": "excel"
+ },
+ "MN-01071": {
+  "determinationDate": "2026-02-03",
+  "source": "excel"
+ },
+ "MN-01074": {
+  "determinationDate": "2026-02-26",
+  "source": "excel"
+ },
+ "MN-01075": {
+  "determinationDate": "2026-02-10",
+  "source": "excel"
+ },
+ "MN-01080": {
+  "determinationDate": "2026-02-10",
+  "source": "excel"
+ },
+ "MN-01083": {
+  "determinationDate": "2026-04-02",
+  "source": "excel"
+ },
+ "MN-01090": {
+  "determinationDate": "2026-04-09",
+  "source": "pdf-filename"
+ },
+ "MN-01093": {
+  "determinationDate": "2026-04-30",
+  "source": "excel"
+ },
+ "MN-01103": {
+  "determinationDate": "2026-07-16",
+  "source": "pdf-filename"
+ },
+ "MN-05004": {
+  "determinationDate": "2026-04-08",
+  "source": "excel"
+ },
+ "MN-05009": {
+  "determinationDate": "2026-05-18",
+  "source": "excel"
+ },
+ "MN-05012": {
+  "determinationDate": "2026-05-05",
+  "source": "pdf-filename"
+ },
+ "MN-05014": {
+  "determinationDate": "2026-06-20",
+  "source": "excel"
+ },
+ "MN-05017": {
+  "determinationDate": "2026-06-09",
+  "source": "excel"
+ },
+ "MN-05025": {
+  "determinationDate": "2026-07-06",
+  "source": "excel"
+ },
+ "MN-10001": {
+  "determinationDate": "2026-03-03",
+  "source": "excel"
+ },
+ "MN-10006": {
+  "determinationDate": "2026-03-03",
+  "source": "excel"
+ },
+ "MN-10007": {
+  "determinationDate": "2026-06-17",
+  "source": "pdf-filename"
+ },
+ "MN-10012": {
+  "determinationDate": "2026-05-21",
+  "source": "excel"
+ },
+ "MN-10013": {
+  "determinationDate": "2026-05-14",
+  "source": "excel"
+ },
+ "MN-10018": {
+  "determinationDate": "2026-07-07",
+  "source": "excel"
+ },
+ "MN-15002": {
+  "determinationDate": "2026-02-19",
+  "source": "excel"
+ },
+ "MN-15005": {
+  "determinationDate": "2026-03-17",
+  "source": "excel"
+ },
+ "MN-15011": {
+  "determinationDate": "2026-05-04",
+  "source": "excel"
+ },
+ "MN-15013": {
+  "determinationDate": "2026-05-05",
+  "source": "excel"
+ },
+ "MN-15015": {
+  "determinationDate": "2026-06-04",
+  "source": "pdf-cover"
+ },
+ "MN-15018": {
+  "determinationDate": "2026-07-09",
+  "source": "excel"
+ },
+ "MN-15019": {
+  "determinationDate": "2026-06-12",
+  "source": "excel"
+ },
+ "MN-20009": {
+  "determinationDate": "2026-04-01",
+  "source": "excel"
+ },
+ "MN-20011": {
+  "determinationDate": "2026-04-20",
+  "source": "pdf-filename"
+ },
+ "MN-20012": {
+  "determinationDate": "2026-05-22",
+  "source": "pub-fallback"
+ },
+ "MN-20013": {
+  "determinationDate": "2026-05-04",
+  "source": "pdf-cover"
+ },
+ "MN-20018": {
+  "determinationDate": "2026-07-14",
+  "source": "excel"
+ },
+ "MN-20023": {
+  "determinationDate": "2026-06-30",
+  "source": "excel"
+ },
+ "MN-25002": {
+  "determinationDate": "2026-02-19",
+  "source": "excel"
+ },
+ "MN-25004": {
+  "determinationDate": "2026-03-12",
+  "source": "excel"
+ },
+ "MN-25006": {
+  "determinationDate": "2026-04-02",
+  "source": "excel"
+ },
+ "MN-25018": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "MN-25021": {
+  "determinationDate": "2026-06-09",
+  "source": "excel"
+ },
+ "MN-25026": {
+  "determinationDate": "2026-06-16",
+  "source": "excel"
+ },
+ "MN-25029": {
+  "determinationDate": "2026-07-01",
+  "source": "excel"
+ },
+ "MN-30005": {
+  "determinationDate": "2026-04-10",
+  "source": "excel"
+ },
+ "MN-30008": {
+  "determinationDate": "2026-06-11",
+  "source": "excel"
+ },
+ "MN-30009": {
+  "determinationDate": "2026-05-08",
+  "source": "excel"
+ },
+ "MN-30012": {
+  "determinationDate": "2026-06-16",
+  "source": "excel"
+ },
+ "MN-30016": {
+  "determinationDate": "2026-06-17",
+  "source": "excel"
+ },
+ "MN-30020": {
+  "determinationDate": "2026-07-02",
+  "source": "excel"
+ },
+ "MN-35013": {
+  "determinationDate": "2026-05-04",
+  "source": "excel"
+ },
+ "MN-35014": {
+  "determinationDate": "2026-06-09",
+  "source": "pdf-cover"
+ },
+ "MN-35019": {
+  "determinationDate": "2026-06-24",
+  "source": "excel"
+ },
+ "MN-40005": {
+  "determinationDate": "2026-03-12",
+  "source": "excel"
+ },
+ "MN-40008": {
+  "determinationDate": "2026-04-16",
+  "source": "pdf-filename"
+ },
+ "MN-40009": {
+  "determinationDate": "2026-04-13",
+  "source": "excel"
+ },
+ "MN-40012": {
+  "determinationDate": "2026-05-06",
+  "source": "excel"
+ },
+ "MN-40015": {
+  "determinationDate": "2026-05-05",
+  "source": "excel"
+ },
+ "MN-40019": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "MN-40020": {
+  "determinationDate": "2026-07-01",
+  "source": "excel"
+ },
+ "MN-40022": {
+  "determinationDate": "2026-06-17",
+  "source": "excel"
+ },
+ "MN-40027": {
+  "determinationDate": "2026-07-16",
+  "source": "excel"
+ },
+ "MN-45002": {
+  "determinationDate": "2026-05-12",
+  "source": "pdf-filename"
+ },
+ "MN-45005": {
+  "determinationDate": "2026-04-17",
+  "source": "pdf-cover"
+ },
+ "MN-45006": {
+  "determinationDate": "2026-06-09",
+  "source": "excel"
+ },
+ "MN-50007": {
+  "determinationDate": "2026-04-07",
+  "source": "pdf-cover"
+ },
+ "MN-50008": {
+  "determinationDate": "2026-05-18",
+  "source": "pdf-cover"
+ },
+ "MN-50012": {
+  "determinationDate": "2026-04-13",
+  "source": "pdf-filename"
+ },
+ "MN-50015": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "MN-50019": {
+  "determinationDate": "2026-07-01",
+  "source": "excel"
+ },
+ "MN-50021": {
+  "determinationDate": "2026-07-09",
+  "source": "excel"
+ },
+ "MN-50022": {
+  "determinationDate": "2026-07-03",
+  "source": "excel"
+ },
+ "MN-50024": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-cover"
+ },
+ "MN-50025": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-cover"
+ },
+ "MN-50026": {
+  "determinationDate": "2026-07-22",
+  "source": "pdf-cover"
+ },
+ "MN-50027": {
+  "determinationDate": "2026-07-13",
+  "source": "excel"
+ },
+ "MN-50030": {
+  "determinationDate": "2026-07-22",
+  "source": "pdf-cover"
+ },
+ "MN-55003": {
+  "determinationDate": "2026-02-24",
+  "source": "excel"
+ },
+ "MN-55006": {
+  "determinationDate": "2026-03-17",
+  "source": "excel"
+ },
+ "MN-55010": {
+  "determinationDate": "2026-04-28",
+  "source": "excel"
+ },
+ "MN-55012": {
+  "determinationDate": "2026-03-31",
+  "source": "pdf-cover"
+ },
+ "MN-55013": {
+  "determinationDate": "2026-05-05",
+  "source": "excel"
+ },
+ "MN-55016": {
+  "determinationDate": "2026-05-14",
+  "source": "excel"
+ },
+ "MN-60004": {
+  "determinationDate": "2026-03-24",
+  "source": "pdf-cover"
+ },
+ "MN-60007": {
+  "determinationDate": "2026-03-19",
+  "source": "excel"
+ },
+ "MN-60011": {
+  "determinationDate": "2026-06-03",
+  "source": "excel"
+ },
+ "MN-60014": {
+  "determinationDate": "2026-05-18",
+  "source": "excel"
+ },
+ "MN-60015": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "MN-60022": {
+  "determinationDate": "2026-07-15",
+  "source": "excel"
+ },
+ "MN-65007": {
+  "determinationDate": "2026-03-17",
+  "source": "excel"
+ },
+ "MN-65008": {
+  "determinationDate": "2026-05-05",
+  "source": "excel"
+ },
+ "MN-65009": {
+  "determinationDate": "2026-04-16",
+  "source": "pdf-cover"
+ },
+ "MN-65016": {
+  "determinationDate": "2026-06-09",
+  "source": "excel"
+ },
+ "MN-65022": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-cover"
+ },
+ "MN-70005": {
+  "determinationDate": "2026-03-12",
+  "source": "excel"
+ },
+ "MN-70012": {
+  "determinationDate": "2026-06-03",
+  "source": "excel"
+ },
+ "MN-70013": {
+  "determinationDate": "2026-05-07",
+  "source": "excel"
+ },
+ "MN-70014": {
+  "determinationDate": "2026-05-18",
+  "source": "excel"
+ },
+ "MN-70018": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "MN-70020": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-filename"
+ },
+ "MN-70022": {
+  "determinationDate": "2026-07-14",
+  "source": "excel"
+ },
+ "MN-75002": {
+  "determinationDate": "2026-02-10",
+  "source": "excel"
+ },
+ "MN-75003": {
+  "determinationDate": "2026-02-12",
+  "source": "excel"
+ },
+ "MN-75004": {
+  "determinationDate": "2026-03-10",
+  "source": "excel"
+ },
+ "MN-75012": {
+  "determinationDate": "2026-04-13",
+  "source": "pub-fallback"
+ },
+ "MN-75014": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "MN-75016": {
+  "determinationDate": "2026-06-16",
+  "source": "excel"
+ },
+ "MN-75018": {
+  "determinationDate": "2026-06-09",
+  "source": "pdf-filename"
+ },
+ "MN-75023": {
+  "determinationDate": "2026-07-10",
+  "source": "excel"
+ },
+ "MN-75027": {
+  "determinationDate": "2026-07-22",
+  "source": "pdf-cover"
+ },
+ "MN-80002": {
+  "determinationDate": "2026-03-03",
+  "source": "excel"
+ },
+ "MN-80004": {
+  "determinationDate": "2026-03-17",
+  "source": "excel"
+ },
+ "MN-80010": {
+  "determinationDate": "2026-05-28",
+  "source": "excel"
+ },
+ "MN-80016": {
+  "determinationDate": "2026-06-20",
+  "source": "excel"
+ },
+ "MN-85002": {
+  "determinationDate": "2026-02-10",
+  "source": "excel"
+ },
+ "MN-85003": {
+  "determinationDate": "2026-03-19",
+  "source": "pdf-filename"
+ },
+ "MN-85006": {
+  "determinationDate": "2026-04-28",
+  "source": "pdf-filename"
+ },
+ "MN-85007": {
+  "determinationDate": "2026-03-17",
+  "source": "pdf-filename"
+ },
+ "MN-85026": {
+  "determinationDate": "2026-06-17",
+  "source": "excel"
+ },
+ "MN-90006": {
+  "determinationDate": "2026-03-30",
+  "source": "excel"
+ },
+ "MN-90007": {
+  "determinationDate": "2026-06-05",
+  "source": "excel"
+ },
+ "MN-90012": {
+  "determinationDate": "2026-06-24",
+  "source": "pdf-cover"
+ },
+ "MN-90015": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "MN-90020": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-cover"
+ },
+ "MN-95001": {
+  "determinationDate": "2026-05-06",
+  "source": "pdf-filename"
+ },
+ "MN-95002": {
+  "determinationDate": "2026-02-24",
+  "source": "excel"
+ },
+ "MN-95003": {
+  "determinationDate": "2026-04-09",
+  "source": "excel"
+ },
+ "MN-95007": {
+  "determinationDate": "2026-06-11",
+  "source": "excel"
+ },
+ "MN-95011": {
+  "determinationDate": "2026-05-04",
+  "source": "excel"
+ },
+ "MN-95016": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "MN-95021": {
+  "determinationDate": "2026-07-02",
+  "source": "excel"
+ },
+ "WA-01081": {
+  "determinationDate": "2026-01-20",
+  "source": "excel"
+ },
+ "WA-01087": {
+  "determinationDate": "2026-03-12",
+  "source": "excel"
+ },
+ "WA-01088": {
+  "determinationDate": "2026-03-06",
+  "source": "excel"
+ },
+ "WA-01092": {
+  "determinationDate": "2026-04-23",
+  "source": "excel"
+ },
+ "WA-01094": {
+  "determinationDate": "2026-05-11",
+  "source": "excel"
+ },
+ "WA-01097": {
+  "determinationDate": "2026-05-18",
+  "source": "excel"
+ },
+ "WA-01098": {
+  "determinationDate": "2026-05-25",
+  "source": "excel"
+ },
+ "WA-01100": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-01101": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-01102": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "WA-01108": {
+  "determinationDate": "2026-06-30",
+  "source": "excel"
+ },
+ "WA-01110": {
+  "determinationDate": "2026-07-22",
+  "source": "pdf-filename"
+ },
+ "WA-01113": {
+  "determinationDate": "2026-07-18",
+  "source": "pdf-filename"
+ },
+ "WA-05003": {
+  "determinationDate": "2026-01-27",
+  "source": "excel"
+ },
+ "WA-05005": {
+  "determinationDate": "2026-04-09",
+  "source": "excel"
+ },
+ "WA-05007": {
+  "determinationDate": "2026-02-26",
+  "source": "excel"
+ },
+ "WA-05008": {
+  "determinationDate": "2026-03-06",
+  "source": "excel"
+ },
+ "WA-05016": {
+  "determinationDate": "2026-05-05",
+  "source": "excel"
+ },
+ "WA-05018": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-05019": {
+  "determinationDate": "2026-05-15",
+  "source": "excel"
+ },
+ "WA-05020": {
+  "determinationDate": "2026-05-21",
+  "source": "excel"
+ },
+ "WA-05023": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-05024": {
+  "determinationDate": "2026-06-24",
+  "source": "excel"
+ },
+ "WA-05026": {
+  "determinationDate": "2026-06-23",
+  "source": "excel"
+ },
+ "WA-05029": {
+  "determinationDate": "2026-07-16",
+  "source": "pdf-filename"
+ },
+ "WA-10002": {
+  "determinationDate": "2026-02-13",
+  "source": "excel"
+ },
+ "WA-10008": {
+  "determinationDate": "2026-03-12",
+  "source": "excel"
+ },
+ "WA-10009": {
+  "determinationDate": "2026-03-24",
+  "source": "excel"
+ },
+ "WA-10010": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-10011": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-10014": {
+  "determinationDate": "2026-04-30",
+  "source": "excel"
+ },
+ "WA-10019": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "WA-10020": {
+  "determinationDate": "2026-07-16",
+  "source": "pdf-filename"
+ },
+ "WA-15003": {
+  "determinationDate": "2026-02-13",
+  "source": "excel"
+ },
+ "WA-15004": {
+  "determinationDate": "2026-02-20",
+  "source": "excel"
+ },
+ "WA-15007": {
+  "determinationDate": "2026-02-19",
+  "source": "excel"
+ },
+ "WA-15008": {
+  "determinationDate": "2026-02-25",
+  "source": "excel"
+ },
+ "WA-15009": {
+  "determinationDate": "2026-03-20",
+  "source": "excel"
+ },
+ "WA-15010": {
+  "determinationDate": "2026-03-24",
+  "source": "excel"
+ },
+ "WA-15012": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-15014": {
+  "determinationDate": "2026-04-24",
+  "source": "excel"
+ },
+ "WA-15020": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-15021": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-15022": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-15023": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-15024": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "WA-15025": {
+  "determinationDate": "2026-06-24",
+  "source": "excel"
+ },
+ "WA-15026": {
+  "determinationDate": "2026-07-07",
+  "source": "excel"
+ },
+ "WA-15029": {
+  "determinationDate": "2026-07-17",
+  "source": "pdf-filename"
+ },
+ "WA-20003": {
+  "determinationDate": "2026-01-30",
+  "source": "excel"
+ },
+ "WA-20005": {
+  "determinationDate": "2026-02-12",
+  "source": "excel"
+ },
+ "WA-20007": {
+  "determinationDate": "2026-03-19",
+  "source": "excel"
+ },
+ "WA-20008": {
+  "determinationDate": "2026-03-23",
+  "source": "excel"
+ },
+ "WA-20010": {
+  "determinationDate": "2026-03-19",
+  "source": "excel"
+ },
+ "WA-20015": {
+  "determinationDate": "2026-05-07",
+  "source": "excel"
+ },
+ "WA-20019": {
+  "determinationDate": "2026-05-27",
+  "source": "excel"
+ },
+ "WA-20020": {
+  "determinationDate": "2026-05-25",
+  "source": "excel"
+ },
+ "WA-20022": {
+  "determinationDate": "2026-06-02",
+  "source": "excel"
+ },
+ "WA-20024": {
+  "determinationDate": "2026-06-02",
+  "source": "excel"
+ },
+ "WA-20025": {
+  "determinationDate": "2026-06-29",
+  "source": "excel"
+ },
+ "WA-20026": {
+  "determinationDate": "2026-07-06",
+  "source": "excel"
+ },
+ "WA-20028": {
+  "determinationDate": "2026-07-13",
+  "source": "excel"
+ },
+ "WA-25001": {
+  "determinationDate": "2026-02-05",
+  "source": "excel"
+ },
+ "WA-25003": {
+  "determinationDate": "2026-02-03",
+  "source": "excel"
+ },
+ "WA-25005": {
+  "determinationDate": "2026-02-09",
+  "source": "excel"
+ },
+ "WA-25008": {
+  "determinationDate": "2026-03-24",
+  "source": "excel"
+ },
+ "WA-25009": {
+  "determinationDate": "2026-04-08",
+  "source": "excel"
+ },
+ "WA-25010": {
+  "determinationDate": "2026-04-16",
+  "source": "excel"
+ },
+ "WA-25011": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-25013": {
+  "determinationDate": "2026-04-01",
+  "source": "excel"
+ },
+ "WA-25014": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-25016": {
+  "determinationDate": "2026-05-01",
+  "source": "excel"
+ },
+ "WA-25017": {
+  "determinationDate": "2026-05-06",
+  "source": "excel"
+ },
+ "WA-25020": {
+  "determinationDate": "2026-05-25",
+  "source": "excel"
+ },
+ "WA-25022": {
+  "determinationDate": "2026-05-15",
+  "source": "excel"
+ },
+ "WA-25023": {
+  "determinationDate": "2026-05-18",
+  "source": "excel"
+ },
+ "WA-25025": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-25027": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-25028": {
+  "determinationDate": "2026-06-30",
+  "source": "excel"
+ },
+ "WA-25030": {
+  "determinationDate": "2026-07-01",
+  "source": "excel"
+ },
+ "WA-25031": {
+  "determinationDate": "2026-07-08",
+  "source": "excel"
+ },
+ "WA-25032": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-25033": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "WA-25036": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-filename"
+ },
+ "WA-30010": {
+  "determinationDate": "2026-05-15",
+  "source": "excel"
+ },
+ "WA-30011": {
+  "determinationDate": "2026-05-19",
+  "source": "excel"
+ },
+ "WA-30014": {
+  "determinationDate": "2026-05-21",
+  "source": "excel"
+ },
+ "WA-30015": {
+  "determinationDate": "2026-05-27",
+  "source": "excel"
+ },
+ "WA-30018": {
+  "determinationDate": "2026-06-01",
+  "source": "excel"
+ },
+ "WA-30019": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "WA-30021": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "WA-30024": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-filename"
+ },
+ "WA-35001": {
+  "determinationDate": "2026-01-12",
+  "source": "excel"
+ },
+ "WA-35002": {
+  "determinationDate": "2026-01-27",
+  "source": "excel"
+ },
+ "WA-35003": {
+  "determinationDate": "2026-01-20",
+  "source": "excel"
+ },
+ "WA-35004": {
+  "determinationDate": "2026-02-04",
+  "source": "excel"
+ },
+ "WA-35005": {
+  "determinationDate": "2026-02-24",
+  "source": "excel"
+ },
+ "WA-35008": {
+  "determinationDate": "2026-03-26",
+  "source": "excel"
+ },
+ "WA-35010": {
+  "determinationDate": "2026-03-24",
+  "source": "excel"
+ },
+ "WA-35011": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-35015": {
+  "determinationDate": "2026-05-11",
+  "source": "excel"
+ },
+ "WA-35016": {
+  "determinationDate": "2026-05-26",
+  "source": "excel"
+ },
+ "WA-35020": {
+  "determinationDate": "2026-06-01",
+  "source": "excel"
+ },
+ "WA-35021": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-35022": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-35023": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-35025": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "WA-35026": {
+  "determinationDate": "2026-07-06",
+  "source": "excel"
+ },
+ "WA-35027": {
+  "determinationDate": "2026-06-30",
+  "source": "excel"
+ },
+ "WA-40002": {
+  "determinationDate": "2026-02-02",
+  "source": "excel"
+ },
+ "WA-40003": {
+  "determinationDate": "2026-01-30",
+  "source": "excel"
+ },
+ "WA-40004": {
+  "determinationDate": "2026-02-12",
+  "source": "excel"
+ },
+ "WA-40010": {
+  "determinationDate": "2026-03-31",
+  "source": "excel"
+ },
+ "WA-40011": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-40014": {
+  "determinationDate": "2026-04-17",
+  "source": "excel"
+ },
+ "WA-40016": {
+  "determinationDate": "2026-04-22",
+  "source": "excel"
+ },
+ "WA-40018": {
+  "determinationDate": "2026-05-12",
+  "source": "excel"
+ },
+ "WA-40021": {
+  "determinationDate": "2026-05-12",
+  "source": "excel"
+ },
+ "WA-40023": {
+  "determinationDate": "2026-06-02",
+  "source": "excel"
+ },
+ "WA-40024": {
+  "determinationDate": "2026-06-05",
+  "source": "excel"
+ },
+ "WA-40025": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-40026": {
+  "determinationDate": "2026-06-26",
+  "source": "excel"
+ },
+ "WA-40028": {
+  "determinationDate": "2026-06-30",
+  "source": "excel"
+ },
+ "WA-40030": {
+  "determinationDate": "2026-07-13",
+  "source": "excel"
+ },
+ "WA-45001": {
+  "determinationDate": "2026-02-16",
+  "source": "excel"
+ },
+ "WA-45003": {
+  "determinationDate": "2026-03-11",
+  "source": "excel"
+ },
+ "WA-45007": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-45009": {
+  "determinationDate": "2026-04-10",
+  "source": "excel"
+ },
+ "WA-45010": {
+  "determinationDate": "2026-05-01",
+  "source": "excel"
+ },
+ "WA-45011": {
+  "determinationDate": "2026-04-16",
+  "source": "excel"
+ },
+ "WA-45012": {
+  "determinationDate": "2026-05-05",
+  "source": "excel"
+ },
+ "WA-45013": {
+  "determinationDate": "2026-05-11",
+  "source": "excel"
+ },
+ "WA-45014": {
+  "determinationDate": "2026-06-08",
+  "source": "excel"
+ },
+ "WA-45015": {
+  "determinationDate": "2026-05-25",
+  "source": "excel"
+ },
+ "WA-45016": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-45017": {
+  "determinationDate": "2026-06-26",
+  "source": "excel"
+ },
+ "WA-45018": {
+  "determinationDate": "2026-07-01",
+  "source": "excel"
+ },
+ "WA-45019": {
+  "determinationDate": "2026-07-15",
+  "source": "excel"
+ },
+ "WA-45020": {
+  "determinationDate": "2026-07-17",
+  "source": "pdf-filename"
+ },
+ "WA-50003": {
+  "determinationDate": "2026-02-20",
+  "source": "excel"
+ },
+ "WA-50005": {
+  "determinationDate": "2026-03-06",
+  "source": "excel"
+ },
+ "WA-50006": {
+  "determinationDate": "2026-03-19",
+  "source": "excel"
+ },
+ "WA-50010": {
+  "determinationDate": "2026-04-01",
+  "source": "excel"
+ },
+ "WA-50013": {
+  "determinationDate": "2026-04-23",
+  "source": "excel"
+ },
+ "WA-50014": {
+  "determinationDate": "2026-04-22",
+  "source": "excel"
+ },
+ "WA-50016": {
+  "determinationDate": "2026-06-01",
+  "source": "excel"
+ },
+ "WA-50017": {
+  "determinationDate": "2026-05-21",
+  "source": "excel"
+ },
+ "WA-50018": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-50020": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-50023": {
+  "determinationDate": "2026-06-15",
+  "source": "excel"
+ },
+ "WA-50029": {
+  "determinationDate": "2026-07-13",
+  "source": "excel"
+ },
+ "WA-50031": {
+  "determinationDate": "2026-07-20",
+  "source": "pdf-filename"
+ },
+ "WA-55004": {
+  "determinationDate": "2026-02-10",
+  "source": "excel"
+ },
+ "WA-55005": {
+  "determinationDate": "2026-02-19",
+  "source": "excel"
+ },
+ "WA-55009": {
+  "determinationDate": "2026-03-11",
+  "source": "excel"
+ },
+ "WA-55011": {
+  "determinationDate": "2026-03-16",
+  "source": "excel"
+ },
+ "WA-55014": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-55015": {
+  "determinationDate": "2026-04-28",
+  "source": "excel"
+ },
+ "WA-55017": {
+  "determinationDate": "2026-05-01",
+  "source": "excel"
+ },
+ "WA-55019": {
+  "determinationDate": "2026-05-26",
+  "source": "excel"
+ },
+ "WA-55020": {
+  "determinationDate": "2026-05-27",
+  "source": "excel"
+ },
+ "WA-55021": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-55022": {
+  "determinationDate": "2026-06-09",
+  "source": "excel"
+ },
+ "WA-55023": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-55025": {
+  "determinationDate": "2026-06-26",
+  "source": "excel"
+ },
+ "WA-55026": {
+  "determinationDate": "2026-07-03",
+  "source": "excel"
+ },
+ "WA-55027": {
+  "determinationDate": "2026-07-16",
+  "source": "excel"
+ },
+ "WA-60006": {
+  "determinationDate": "2026-01-29",
+  "source": "excel"
+ },
+ "WA-60008": {
+  "determinationDate": "2026-01-30",
+  "source": "excel"
+ },
+ "WA-60010": {
+  "determinationDate": "2026-03-27",
+  "source": "excel"
+ },
+ "WA-60012": {
+  "determinationDate": "2026-04-23",
+  "source": "excel"
+ },
+ "WA-60013": {
+  "determinationDate": "2026-04-29",
+  "source": "excel"
+ },
+ "WA-60017": {
+  "determinationDate": "2026-04-30",
+  "source": "excel"
+ },
+ "WA-60019": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "WA-60020": {
+  "determinationDate": "2026-06-03",
+  "source": "excel"
+ },
+ "WA-60021": {
+  "determinationDate": "2026-06-19",
+  "source": "excel"
+ },
+ "WA-60023": {
+  "determinationDate": "2026-07-06",
+  "source": "excel"
+ },
+ "WA-60024": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "WA-65003": {
+  "determinationDate": "2026-02-05",
+  "source": "excel"
+ },
+ "WA-65010": {
+  "determinationDate": "2026-03-31",
+  "source": "excel"
+ },
+ "WA-65011": {
+  "determinationDate": "2026-04-14",
+  "source": "excel"
+ },
+ "WA-65012": {
+  "determinationDate": "2026-04-29",
+  "source": "excel"
+ },
+ "WA-65013": {
+  "determinationDate": "2026-05-07",
+  "source": "excel"
+ },
+ "WA-65014": {
+  "determinationDate": "2026-05-13",
+  "source": "excel"
+ },
+ "WA-65015": {
+  "determinationDate": "2026-05-19",
+  "source": "excel"
+ },
+ "WA-65017": {
+  "determinationDate": "2026-05-28",
+  "source": "excel"
+ },
+ "WA-65018": {
+  "determinationDate": "2026-05-25",
+  "source": "excel"
+ },
+ "WA-65024": {
+  "determinationDate": "2026-07-07",
+  "source": "excel"
+ },
+ "WA-65025": {
+  "determinationDate": "2026-07-16",
+  "source": "pdf-filename"
+ },
+ "WA-65027": {
+  "determinationDate": "2026-07-16",
+  "source": "excel"
+ },
+ "WA-70002": {
+  "determinationDate": "2026-01-12",
+  "source": "excel"
+ },
+ "WA-70003": {
+  "determinationDate": "2026-02-05",
+  "source": "excel"
+ },
+ "WA-70004": {
+  "determinationDate": "2026-02-26",
+  "source": "excel"
+ },
+ "WA-70006": {
+  "determinationDate": "2026-03-06",
+  "source": "excel"
+ },
+ "WA-70007": {
+  "determinationDate": "2026-03-06",
+  "source": "excel"
+ },
+ "WA-70008": {
+  "determinationDate": "2026-03-31",
+  "source": "excel"
+ },
+ "WA-70009": {
+  "determinationDate": "2026-03-26",
+  "source": "excel"
+ },
+ "WA-70010": {
+  "determinationDate": "2026-04-02",
+  "source": "excel"
+ },
+ "WA-70011": {
+  "determinationDate": "2026-04-22",
+  "source": "excel"
+ },
+ "WA-70015": {
+  "determinationDate": "2026-04-28",
+  "source": "excel"
+ },
+ "WA-70016": {
+  "determinationDate": "2026-05-04",
+  "source": "excel"
+ },
+ "WA-70017": {
+  "determinationDate": "2026-05-19",
+  "source": "excel"
+ },
+ "WA-70019": {
+  "determinationDate": "2026-05-21",
+  "source": "excel"
+ },
+ "WA-70021": {
+  "determinationDate": "2026-06-24",
+  "source": "excel"
+ },
+ "WA-70023": {
+  "determinationDate": "2026-06-29",
+  "source": "excel"
+ },
+ "WA-70024": {
+  "determinationDate": "2026-07-02",
+  "source": "excel"
+ },
+ "WA-70025": {
+  "determinationDate": "2026-07-08",
+  "source": "excel"
+ },
+ "WA-75006": {
+  "determinationDate": "2026-02-19",
+  "source": "excel"
+ },
+ "WA-75008": {
+  "determinationDate": "2026-02-27",
+  "source": "excel"
+ },
+ "WA-75010": {
+  "determinationDate": "2026-03-06",
+  "source": "excel"
+ },
+ "WA-75011": {
+  "determinationDate": "2026-03-11",
+  "source": "excel"
+ },
+ "WA-75013": {
+  "determinationDate": "2026-03-31",
+  "source": "excel"
+ },
+ "WA-75015": {
+  "determinationDate": "2026-04-02",
+  "source": "excel"
+ },
+ "WA-75017": {
+  "determinationDate": "2026-04-29",
+  "source": "excel"
+ },
+ "WA-75020": {
+  "determinationDate": "2026-05-14",
+  "source": "excel"
+ },
+ "WA-75021": {
+  "determinationDate": "2026-05-25",
+  "source": "excel"
+ },
+ "WA-75022": {
+  "determinationDate": "2026-05-21",
+  "source": "excel"
+ },
+ "WA-75024": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-75025": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-75026": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-75030": {
+  "determinationDate": "2026-07-21",
+  "source": "pdf-filename"
+ },
+ "WA-75032": {
+  "determinationDate": "2026-07-16",
+  "source": "excel"
+ },
+ "WA-80001": {
+  "determinationDate": "2026-01-29",
+  "source": "excel"
+ },
+ "WA-80006": {
+  "determinationDate": "2026-03-12",
+  "source": "excel"
+ },
+ "WA-80007": {
+  "determinationDate": "2026-04-07",
+  "source": "excel"
+ },
+ "WA-80008": {
+  "determinationDate": "2026-04-21",
+  "source": "excel"
+ },
+ "WA-80009": {
+  "determinationDate": "2026-04-16",
+  "source": "excel"
+ },
+ "WA-80011": {
+  "determinationDate": "2026-05-11",
+  "source": "excel"
+ },
+ "WA-80012": {
+  "determinationDate": "2026-05-15",
+  "source": "excel"
+ },
+ "WA-80013": {
+  "determinationDate": "2026-05-29",
+  "source": "excel"
+ },
+ "WA-80015": {
+  "determinationDate": "2026-06-02",
+  "source": "excel"
+ },
+ "WA-80017": {
+  "determinationDate": "2026-06-02",
+  "source": "excel"
+ },
+ "WA-80018": {
+  "determinationDate": "2026-06-02",
+  "source": "excel"
+ },
+ "WA-80019": {
+  "determinationDate": "2026-06-22",
+  "source": "excel"
+ },
+ "WA-80020": {
+  "determinationDate": "2026-06-10",
+  "source": "excel"
+ },
+ "WA-80022": {
+  "determinationDate": "2026-06-30",
+  "source": "excel"
+ },
+ "WA-80023": {
+  "determinationDate": "2026-07-16",
+  "source": "excel"
+ },
+ "WA-85004": {
+  "determinationDate": "2026-01-27",
+  "source": "excel"
+ },
+ "WA-85005": {
+  "determinationDate": "2026-01-30",
+  "source": "excel"
+ },
+ "WA-85008": {
+  "determinationDate": "2026-02-19",
+  "source": "excel"
+ },
+ "WA-85011": {
+  "determinationDate": "2026-03-17",
+  "source": "excel"
+ },
+ "WA-85013": {
+  "determinationDate": "2026-03-10",
+  "source": "excel"
+ },
+ "WA-85014": {
+  "determinationDate": "2026-03-19",
+  "source": "excel"
+ },
+ "WA-85016": {
+  "determinationDate": "2026-04-14",
+  "source": "excel"
+ },
+ "WA-85017": {
+  "determinationDate": "2026-04-09",
+  "source": "excel"
+ },
+ "WA-85018": {
+  "determinationDate": "2026-04-10",
+  "source": "excel"
+ },
+ "WA-85020": {
+  "determinationDate": "2026-04-02",
+  "source": "excel"
+ },
+ "WA-85021": {
+  "determinationDate": "2026-04-13",
+  "source": "excel"
+ },
+ "WA-85022": {
+  "determinationDate": "2026-04-16",
+  "source": "excel"
+ },
+ "WA-85025": {
+  "determinationDate": "2026-05-06",
+  "source": "excel"
+ },
+ "WA-85027": {
+  "determinationDate": "2026-05-22",
+  "source": "excel"
+ },
+ "WA-85030": {
+  "determinationDate": "2026-06-01",
+  "source": "excel"
+ },
+ "WA-85032": {
+  "determinationDate": "2026-06-19",
+  "source": "excel"
+ },
+ "WA-85034": {
+  "determinationDate": "2026-07-03",
+  "source": "excel"
+ },
+ "WA-85035": {
+  "determinationDate": "2026-06-25",
+  "source": "excel"
+ },
+ "WA-90002": {
+  "determinationDate": "2026-02-24",
+  "source": "excel"
+ },
+ "WA-90004": {
+  "determinationDate": "2026-03-05",
+  "source": "excel"
+ },
+ "WA-90010": {
+  "determinationDate": "2026-04-20",
+  "source": "excel"
+ },
+ "WA-90011": {
+  "determinationDate": "2026-04-29",
+  "source": "excel"
+ },
+ "WA-90013": {
+  "determinationDate": "2026-05-11",
+  "source": "excel"
+ },
+ "WA-90014": {
+  "determinationDate": "2026-05-15",
+  "source": "excel"
+ },
+ "WA-90016": {
+  "determinationDate": "2026-05-29",
+  "source": "excel"
+ },
+ "WA-90018": {
+  "determinationDate": "2026-06-17",
+  "source": "excel"
+ },
+ "WA-90019": {
+  "determinationDate": "2026-06-18",
+  "source": "excel"
+ },
+ "WA-90021": {
+  "determinationDate": "2026-07-03",
+  "source": "excel"
+ },
+ "WA-90023": {
+  "determinationDate": "2026-07-08",
+  "source": "excel"
+ },
+ "WA-90025": {
+  "determinationDate": "2026-07-15",
+  "source": "excel"
+ },
+ "WA-95005": {
+  "determinationDate": "2026-02-18",
+  "source": "excel"
+ },
+ "WA-95006": {
+  "determinationDate": "2026-02-20",
+  "source": "excel"
+ },
+ "WA-95008": {
+  "determinationDate": "2026-03-10",
+  "source": "excel"
+ },
+ "WA-95009": {
+  "determinationDate": "2026-03-31",
+  "source": "excel"
+ },
+ "WA-95010": {
+  "determinationDate": "2026-04-13",
+  "source": "excel"
+ },
+ "WA-95012": {
+  "determinationDate": "2026-04-28",
+  "source": "excel"
+ },
+ "WA-95014": {
+  "determinationDate": "2026-04-29",
+  "source": "excel"
+ },
+ "WA-95015": {
+  "determinationDate": "2026-05-11",
+  "source": "excel"
+ },
+ "WA-95019": {
+  "determinationDate": "2026-06-09",
+  "source": "excel"
+ },
+ "WA-95020": {
+  "determinationDate": "2026-06-04",
+  "source": "excel"
+ },
+ "WA-95022": {
+  "determinationDate": "2026-06-17",
+  "source": "excel"
+ },
+ "WA-95024": {
+  "determinationDate": "2026-06-23",
+  "source": "excel"
+ },
+ "WA-95026": {
+  "determinationDate": "2026-07-13",
+  "source": "excel"
+ },
+ "WA-95027": {
+  "determinationDate": "2026-07-13",
+  "source": "excel"
+ },
+ "WA-95029": {
+  "determinationDate": "2026-07-08",
+  "source": "excel"
+ },
+ "WA-95031": {
+  "determinationDate": "2026-07-17",
+  "source": "pdf-filename"
+ },
+ "WA-65004": {
+  "determinationDate": "2026-02-13",
+  "source": "pdf-filename"
+ }
+}

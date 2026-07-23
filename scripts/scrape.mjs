@@ -24,6 +24,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DATA_PATH = join(ROOT, "data.json");
 const OVERRIDES_PATH = join(ROOT, "overrides.json");
+// Authoritative real determination dates (from the firm's Excel ≤ 16 Jul 2026,
+// and PDF-derived thereafter), keyed by case number. See determination-date-from-pdf memory.
+const DET_STORE_PATH = join(ROOT, "determination-dates.json");
 
 const ORIGIN = "https://www.accc.gov.au";
 const REGISTER_PATH =
@@ -163,7 +166,55 @@ function determinationDateFromEvents($) {
   return dates[dates.length - 1]; // latest determination-related event
 }
 
-/** Parse a case detail page for the determination date + outcome. */
+const MONTHS_LONG = {
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+  july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
+};
+
+/** Extract "23 March 2026" -> "2026-03-23" from arbitrary text. */
+function dateFromText(text) {
+  const m = /(\d{1,2})\s+([A-Za-z]+)\s+(20\d\d)/.exec(text || "");
+  if (!m) return null;
+  const mon = MONTHS_LONG[m[2].toLowerCase()];
+  if (!mon) return null;
+  return `${m[3]}-${String(mon).padStart(2, "0")}-${String(Number(m[1])).padStart(2, "0")}`;
+}
+
+const DET_PDF_EXCLUDE = [
+  "summary", "statement", "reasons", "period", "extend",
+  "concerns", "notice", "undertaking", "remedy", "review",
+];
+
+/**
+ * The determination PDF filename usually carries the REAL determination date
+ * (e.g. "… determination - 23 March 2026.pdf"), which is the authoritative date
+ * — often earlier than the website's publication field. Return it if present.
+ */
+function determinationFilenameDate($) {
+  let best = null; // { published, date }
+  $(".field--name-field-acccgov-merger-events table tbody tr").each((_, tr) => {
+    const label = clean($(tr).find("td").eq(1).text()).toLowerCase();
+    if (!label.includes("determination")) return;
+    if (DET_PDF_EXCLUDE.some((b) => label.includes(b))) return;
+    const href = $(tr).find('a[href$=".pdf"]').attr("href");
+    if (!href) return;
+    const published =
+      $(tr).find("td.acccgov-timeline__date time[datetime]").attr("datetime") ||
+      "";
+    const fname = decodeURIComponent(href.split("/").pop() || "");
+    const d = dateFromText(fname);
+    if (d && (!best || published > best.published))
+      best = { published, date: d };
+  });
+  return best ? best.date : null;
+}
+
+/**
+ * Parse a case detail page for: the determination outcome, the website
+ * publication date (the "Determination publication date" field, or the events
+ * timeline as a fallback), and the real determination date from the PDF filename
+ * where available.
+ */
 function parseDetail(html) {
   const $ = load(html);
   const outcome = clean(
@@ -175,13 +226,11 @@ function parseDetail(html) {
     ".field--name-field-acccgov-pub-reg-end-date time[datetime]"
   ).first();
   const dt = t.attr("datetime");
-  // Primary source: the dedicated field. Fallback: the events timeline.
-  const determinationDate = dt
-    ? dt.slice(0, 10)
-    : determinationDateFromEvents($);
+  const publicationDate = dt ? dt.slice(0, 10) : determinationDateFromEvents($);
   return {
     determinationOutcome: outcome || null,
-    determinationDate: determinationDate || null,
+    publicationDate: publicationDate || null,
+    filenameDate: determinationFilenameDate($),
   };
 }
 
@@ -195,15 +244,18 @@ function utcDate(iso) {
 }
 
 /**
- * Business days from the day AFTER the effective date, up to and INCLUDING
- * the determination date. Equals Excel NETWORKDAYS(eff, det) - 1.
- * Excludes Sat/Sun and only the four fixed-date holidays above.
+ * Excel NETWORKDAYS(effectiveDate, determinationDate) - 1: count business days
+ * in the inclusive range [eff, det], then subtract 1. Excludes Sat/Sun and only
+ * the four fixed-date holidays above. (Counting the full range and subtracting 1
+ * — rather than starting the day after eff — matters when the effective date
+ * falls on a weekend/holiday, where the two differ by one day.)
  */
 function businessDays(effISO, detISO) {
   const DAY = 86400000;
   let count = 0;
-  let cur = utcDate(effISO) + DAY; // start the day AFTER the effective date
+  let cur = utcDate(effISO);
   const end = utcDate(detISO);
+  if (end < cur) return 0;
   while (cur <= end) {
     const dt = new Date(cur);
     const dow = dt.getUTCDay(); // 0 = Sun, 6 = Sat
@@ -214,7 +266,7 @@ function businessDays(effISO, detISO) {
     if (dow !== 0 && dow !== 6 && !FIXED_HOLIDAYS.has(mmdd)) count++;
     cur += DAY;
   }
-  return count;
+  return count - 1;
 }
 
 // ---------------------------------------------------------------------------
@@ -274,6 +326,14 @@ async function loadPrevious() {
   }
 }
 
+async function loadDetStore() {
+  try {
+    return JSON.parse(await readFile(DET_STORE_PATH, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
 async function main() {
   const previous = await loadPrevious();
   const prevByCase = new Map();
@@ -315,17 +375,19 @@ async function main() {
     );
   }
 
-  // 2. Enrich completed/ceased/suspended matters with determination data.
-  //    Under-assessment matters have no determination yet → skip the detail page.
-  //    Already-completed matters from the last run are cached → skip the fetch.
+  // 2. Enrich completed/ceased/suspended matters with the publication date, the
+  //    determination outcome, and the determination-PDF filename date.
+  //    Under-assessment matters have none of these → skip the detail page.
+  //    Matters already completed in the last run are cached → skip the fetch.
   console.log("Fetching detail pages where needed…");
   let fetched = 0;
   let cached = 0;
   for (const r of listing) {
     const needsDetermination = r.status && r.status !== "Under assessment";
     if (!needsDetermination) {
-      r.determinationDate = null;
+      r.publicationDate = null;
       r.determinationOutcome = null;
+      r.filenameDate = null;
       continue;
     }
 
@@ -333,37 +395,71 @@ async function main() {
     const prevWasComplete =
       prev &&
       prev.status === "Assessment completed" &&
-      prev.determinationDate &&
+      (prev.publicationDate || prev.determinationDate) &&
       !prev.overridden; // never cache an overridden value as if it were scraped
     if (prevWasComplete) {
-      r.determinationDate = prev.determinationDate;
+      // prev.determinationDate covers migration from the old single-date model.
+      r.publicationDate = prev.publicationDate ?? prev.determinationDate ?? null;
       r.determinationOutcome = prev.determinationOutcome || null;
+      r.filenameDate = prev.filenameDate ?? null;
       cached++;
       continue;
     }
 
     const html = await fetchHtml(r.permalink);
     const detail = parseDetail(html);
-    r.determinationDate = detail.determinationDate;
+    r.publicationDate = detail.publicationDate;
     r.determinationOutcome = detail.determinationOutcome;
+    r.filenameDate = detail.filenameDate;
     fetched++;
     await sleep(REQUEST_DELAY_MS);
   }
   console.log(`  detail pages: ${fetched} fetched, ${cached} cached`);
 
-  // 3. Compute everything mechanically.
+  // 3. Resolve the REAL determination date and compute everything mechanically.
+  //    Real determination date priority: the committed store (Excel-verified or
+  //    previously PDF-derived) → the PDF filename date → the publication date.
+  //    Newly derived filename dates are written back to the store below.
+  const detStore = await loadDetStore();
+  let storeAdded = 0;
   for (const r of listing) {
+    let realDet = detStore[r.caseNumber]?.determinationDate || null;
+    if (!realDet && r.status === "Assessment completed") {
+      if (r.filenameDate) {
+        realDet = r.filenameDate;
+        detStore[r.caseNumber] = {
+          determinationDate: realDet,
+          source: "pdf-filename",
+        };
+        storeAdded++;
+      } else {
+        realDet = r.publicationDate || null; // best-effort fallback
+      }
+    }
+    r.determinationDate = realDet;
+
     r.reviewComplete = Boolean(
       r.status === "Assessment completed" && r.determinationDate
     );
     if (r.reviewComplete && r.effectiveDate && r.determinationDate) {
-      r.durationBusinessDays = businessDays(r.effectiveDate, r.determinationDate);
+      r.durationBusinessDays = businessDays(
+        r.effectiveDate,
+        r.determinationDate
+      );
     } else {
       r.durationBusinessDays = "—";
     }
     r.overridden = false;
     r.overriddenFields = [];
     r.notes = "";
+  }
+  if (storeAdded) {
+    await writeFile(
+      DET_STORE_PATH,
+      JSON.stringify(detStore, null, 1) + "\n",
+      "utf8"
+    );
+    console.log(`  added ${storeAdded} PDF-filename determination date(s) to the store.`);
   }
 
   // 4. Deep-merge overrides on top (override values win, never recomputed away).
@@ -402,6 +498,7 @@ async function main() {
     stage: r.stage,
     effectiveDate: r.effectiveDate,
     determinationDate: r.determinationDate ?? null,
+    publicationDate: r.publicationDate ?? null,
     determinationOutcome: r.determinationOutcome ?? null,
     reviewComplete: r.reviewComplete,
     durationBusinessDays: r.durationBusinessDays,
