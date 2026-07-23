@@ -1,0 +1,35 @@
+{
+  "_readme": "MANUAL OVERRIDES. This layer pins hand-adjusted figures so the mechanical calculation can never silently overwrite a known, deliberate exception. Keys are ACCC case numbers exactly as shown on the register (e.g. 'MN-65028'). Any key beginning with an underscore is IGNORED (these notes and the example below). For each real case-number key you may set any of: reviewComplete (true/false), determinationDate ('YYYY-MM-DD'), durationBusinessDays (a number, or the string '—' for an em dash), status (string), notes (string, shown as a small 'manual' tag on that row). Pipeline order: scrape -> compute mechanically -> merge these on top, so the fields you set here always win. To activate a placeholder below, RENAME its key from the 'REPLACE-...' text to the real case number and fill in the values; delete any placeholder you don't need.",
+  "_example": {
+    "MN-00000": {
+      "reviewComplete": true,
+      "determinationDate": "2026-01-15",
+      "durationBusinessDays": 12,
+      "status": "Assessment completed",
+      "notes": "Example only — this key starts under _example so it is ignored. Copy this shape to a top-level real case number to use it."
+    }
+  },
+
+  "REPLACE-with-case-number-saturday-effective-date": {
+    "durationBusinessDays": 0,
+    "notes": "Saturday effective date: firm counts the clock from the following Monday, so the mechanical result is off by the weekend. Enter the firm's corrected business-day count here."
+  },
+
+  "REPLACE-with-case-number-suspended-show-dash": {
+    "durationBusinessDays": "—",
+    "notes": "Assessment suspended — show an em dash for duration even though the matter is otherwise marked complete."
+  },
+
+  "REPLACE-with-case-number-clock-stopped-show-dash": {
+    "durationBusinessDays": "—",
+    "notes": "Review clock stopped — show an em dash for duration despite the completed marking."
+  },
+
+  "REPLACE-with-case-number-not-authorised-to-open": {
+    "reviewComplete": true,
+    "determinationDate": "",
+    "durationBusinessDays": 0,
+    "status": "Assessment completed",
+    "notes": "Non-standard determination ('Not authorised to open'). Duration set manually and is unverifiable — pinned here."
+  }
+}

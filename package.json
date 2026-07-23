@@ -1,0 +1,16 @@
+{
+  "name": "accc-acquisitions-register-mirror",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-updating mirror of the ACCC Mergers & Acquisitions Acquisitions register, with firm statistics.",
+  "scripts": {
+    "scrape": "node scripts/scrape.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}

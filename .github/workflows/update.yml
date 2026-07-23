@@ -1,0 +1,53 @@
+name: Update register data
+
+# Refreshes data.json from the ACCC Acquisitions register.
+# Runs on a schedule and can be triggered manually from the Actions tab.
+
+on:
+  workflow_dispatch: {} # the "Run workflow" button — force a refresh anytime
+  schedule:
+    # GitHub cron is in UTC and cannot express a timezone. Sydney is UTC+10
+    # (AEST) / UTC+11 (AEDT), so these shift by an hour across daylight saving.
+    - cron: "0 21 * * *" # ~07:00 Sydney morning (08:00 during AEDT)
+    - cron: "0 9 * * *" #  ~19:00 Sydney evening (20:00 during AEDT)
+
+# Allow the workflow to commit the refreshed data.json back to the repo.
+permissions:
+  contents: write
+
+# Never let two runs race to commit.
+concurrency:
+  group: update-register
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape register and rebuild data.json
+        run: npm run scrape
+
+      - name: Commit data.json if it changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          if git diff --staged --quiet; then
+            echo "No changes to data.json — nothing to commit."
+          else
+            git commit -m "chore(data): refresh register data [skip ci]"
+            git push
+            echo "Committed and pushed refreshed data.json."
+          fi
