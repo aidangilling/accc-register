@@ -181,7 +181,6 @@
         <h3>Completed — duration (business days)</h3>
         ${plainRow("Average", stats.avgDuration == null ? "—" : stats.avgDuration)}
         ${plainRow("Median", stats.medianDuration == null ? "—" : stats.medianDuration)}
-        ${plainRow("Sample (n)", stats.durations.length)}
       </div>`);
 
     return `<div class="stats">${groups.join("")}</div>`;
@@ -192,7 +191,7 @@
     const cols = [
       {
         key: "caseTitle",
-        label: "Case title",
+        label: "Case Title",
         cls: "title-cell",
         sortVal: (r) => (r.caseTitle || "").toLowerCase(),
         cell: (r) => {
@@ -211,7 +210,7 @@
       },
       {
         key: "reviewComplete",
-        label: "Review completed?",
+        label: "Review Completed?",
         cls: "center",
         sortVal: (r) => (r.reviewComplete ? 1 : 0),
         cell: (r) =>
@@ -252,20 +251,20 @@
     cols.push(
       {
         key: "effectiveDate",
-        label: "Effective date",
+        label: "Effective Date",
         sortVal: (r) => r.effectiveDate || "",
         cell: (r) => fmtDate(r.effectiveDate) || '<span class="dash">—</span>',
       },
       {
         key: "determinationDate",
-        label: "Determination date",
+        label: "Determination Date",
         sortVal: (r) => r.determinationDate || "",
         cell: (r) =>
           fmtDate(r.determinationDate) || '<span class="dash">—</span>',
       },
       {
         key: "durationBusinessDays",
-        label: "Duration (bus. days)",
+        label: "Duration (Bus. Days)",
         cls: "num",
         num: true,
         sortVal: (r) =>

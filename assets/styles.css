@@ -8,6 +8,8 @@
   --orange-line: #f0c3a2;
   --orange-text: #b7541a; /* readable orange for links/accents on white */
 
+  --link: #0d4c73; /* blue for body links (case titles, footer) */
+
   --gray: #333333;
   --ink: #2b2b2b;
   --muted: #6b6b6b;
@@ -48,7 +50,7 @@ body {
 }
 
 a {
-  color: var(--orange-text);
+  color: var(--link);
   text-decoration: none;
 }
 a:hover {
@@ -404,14 +406,14 @@ td.center {
   border: 1px solid transparent;
 }
 .pill--under {
-  background: var(--orange-soft);
-  color: var(--orange-text);
-  border-color: var(--orange-line);
+  background: #eef4fb;
+  color: #1c4e80;
+  border-color: #d3e3f4;
 }
 .pill--completed {
-  background: #eef0f1;
-  color: #41494f;
-  border-color: #d9dee1;
+  background: #e9f6ef;
+  color: #1c7a4a;
+  border-color: #c4e6d3;
 }
 .pill--ceased {
   background: #f3eef2;
