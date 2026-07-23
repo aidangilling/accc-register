@@ -44,9 +44,9 @@ const MAX_PAGES = 100; // safety cap on pagination
 const MIN_RECORDS = 1; // a sane scrape returns at least this many
 const MAX_DROP_RATIO = 0.2; // abort if record count drops > 20% vs last good
 
-// The four fixed-date public holidays the firm's convention excludes.
-// (Deliberately only these four — see README / business-days house rule.)
-const FIXED_HOLIDAYS = new Set(["12-25", "12-26", "01-01", "01-26"]);
+// Public holidays the firm's business-days convention excludes: NSW public
+// holidays with weekend -> Monday substitution (matches the firm's workbook).
+// See the business-days-convention memory. Computed per year below.
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -243,15 +243,85 @@ function utcDate(iso) {
   return Date.UTC(y, m - 1, d);
 }
 
+const DAY_MS = 86400000;
+
+function isoOf(ms) {
+  const d = new Date(ms);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+}
+
+/** Easter Sunday (UTC ms) via the Anonymous Gregorian algorithm. */
+function easterSundayMs(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return Date.UTC(year, month - 1, day);
+}
+
+/** The nth Monday (1-indexed) of a month. */
+function nthMondayMs(year, month1, n) {
+  let ms = Date.UTC(year, month1 - 1, 1);
+  while (new Date(ms).getUTCDay() !== 1) ms += DAY_MS;
+  return ms + (n - 1) * 7 * DAY_MS;
+}
+
+/** Weekend -> following Monday substitution. */
+function observedMs(ms) {
+  const dow = new Date(ms).getUTCDay();
+  if (dow === 6) return ms + 2 * DAY_MS; // Sat -> Mon
+  if (dow === 0) return ms + DAY_MS; // Sun -> Mon
+  return ms;
+}
+
+const _holidayCache = new Map();
+
+/** NSW public holidays for a year (with substitutes), as a Set of YYYY-MM-DD. */
+function holidaysFor(year) {
+  if (_holidayCache.has(year)) return _holidayCache.get(year);
+  const S = new Set();
+  const add = (ms) => S.add(isoOf(ms));
+  // Fixed-date holidays, each with a weekend substitute.
+  for (const [mo, da] of [
+    [1, 1], // New Year's Day
+    [1, 26], // Australia Day
+    [12, 25], // Christmas Day
+    [12, 26], // Boxing Day
+  ]) {
+    const ms = Date.UTC(year, mo - 1, da);
+    add(ms);
+    add(observedMs(ms));
+  }
+  const easter = easterSundayMs(year);
+  add(easter - 2 * DAY_MS); // Good Friday
+  add(easter + DAY_MS); // Easter Monday
+  const anzac = Date.UTC(year, 3, 25); // 25 April
+  add(anzac);
+  add(observedMs(anzac));
+  add(nthMondayMs(year, 6, 2)); // King's Birthday (2nd Mon June, NSW)
+  add(nthMondayMs(year, 10, 1)); // Labour Day (1st Mon October, NSW)
+  _holidayCache.set(year, S);
+  return S;
+}
+
 /**
  * Excel NETWORKDAYS(effectiveDate, determinationDate) - 1: count business days
- * in the inclusive range [eff, det], then subtract 1. Excludes Sat/Sun and only
- * the four fixed-date holidays above. (Counting the full range and subtracting 1
- * — rather than starting the day after eff — matters when the effective date
- * falls on a weekend/holiday, where the two differ by one day.)
+ * in the inclusive range [eff, det], then subtract 1. Excludes Sat/Sun and the
+ * NSW public holidays (with weekend substitutes) computed above. (Counting the
+ * full range and subtracting 1 — rather than starting the day after eff —
+ * matters when the effective date falls on a weekend/holiday.)
  */
 function businessDays(effISO, detISO) {
-  const DAY = 86400000;
   let count = 0;
   let cur = utcDate(effISO);
   const end = utcDate(detISO);
@@ -259,12 +329,9 @@ function businessDays(effISO, detISO) {
   while (cur <= end) {
     const dt = new Date(cur);
     const dow = dt.getUTCDay(); // 0 = Sun, 6 = Sat
-    const mmdd =
-      String(dt.getUTCMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(dt.getUTCDate()).padStart(2, "0");
-    if (dow !== 0 && dow !== 6 && !FIXED_HOLIDAYS.has(mmdd)) count++;
-    cur += DAY;
+    if (dow !== 0 && dow !== 6 && !holidaysFor(dt.getUTCFullYear()).has(isoOf(cur)))
+      count++;
+    cur += DAY_MS;
   }
   return count - 1;
 }

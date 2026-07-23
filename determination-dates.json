@@ -1686,5 +1686,9 @@
  "WA-65004": {
   "determinationDate": "2026-02-13",
   "source": "pdf-filename"
+ },
+ "WA-85031": {
+  "determinationDate": "2026-06-24",
+  "source": "pdf-filename"
  }
 }
