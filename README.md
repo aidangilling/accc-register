@@ -8,12 +8,12 @@ and reproduces the firm's statistics for **Phase 1 & 2 Notifications** and
 - **No server, no database, no cost.** A scheduled GitHub Action scrapes the
   register, computes the stats, and commits `data.json`. GitHub Pages serves the
   static site, which just reads that JSON.
-- Updates itself **four times a day** (every 6 hours), plus a manual **Run workflow** button.
+- Updates itself **three times a day** (~9am, 1pm, 6pm Sydney), plus a manual **Run workflow** button.
 
 ## How it works
 
 ```
-┌─ GitHub Action (cron 4×/day + manual) ────────────────────────┐
+┌─ GitHub Action (cron 3×/day + manual) ────────────────────────┐
 │  scripts/scrape.mjs                                            │
 │    1. fetch listing pages (cheerio, plain HTTP)                │
 │    2. fetch detail pages for determination date + outcome     │
@@ -98,10 +98,12 @@ After editing, commit and push. The change appears the next time the Action runs
 Defined in `.github/workflows/update.yml`:
 
 - `workflow_dispatch` — the **Run workflow** button in the **Actions** tab.
-- One cron entry running every 6 hours. GitHub cron is **UTC** and can't express
-  a timezone:
-  - `0 */6 * * *` → 00:00, 06:00, 12:00, 18:00 UTC (≈ 10:00 / 16:00 / 22:00 /
-    04:00 Sydney AEST), so the data is never more than ~6 hours stale.
+- Three cron entries targeting ~9am, 1pm and 6pm Sydney. GitHub cron is **UTC**
+  and can't follow daylight saving, so these are pinned to AEST (UTC+10) and land
+  an hour later during AEDT (summer):
+  - `0 23 * * *` → ~9am Sydney (AEST)
+  - `0 3 * * *`  → ~1pm Sydney (AEST)
+  - `0 8 * * *`  → ~6pm Sydney (AEST)
 
   To change the times, edit those two lines (remember they're UTC).
 
