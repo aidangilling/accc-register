@@ -6,10 +6,11 @@ name: Update register data
 on:
   workflow_dispatch: {} # the "Run workflow" button — force a refresh anytime
   schedule:
-    # GitHub cron is in UTC and cannot express a timezone. Sydney is UTC+10
-    # (AEST) / UTC+11 (AEDT), so these shift by an hour across daylight saving.
-    - cron: "0 21 * * *" # ~07:00 Sydney morning (08:00 during AEDT)
-    - cron: "0 9 * * *" #  ~19:00 Sydney evening (20:00 during AEDT)
+    # Four times a day, every 6 hours (UTC). GitHub cron can't express a
+    # timezone; this runs at 00:00, 06:00, 12:00, 18:00 UTC — i.e. roughly
+    # 10:00 / 16:00 / 22:00 / 04:00 Sydney (AEST), covering the whole day so
+    # the register is never more than ~6 hours stale.
+    - cron: "0 */6 * * *"
 
 # Allow the workflow to commit the refreshed data.json back to the repo.
 permissions:

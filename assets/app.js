@@ -58,96 +58,6 @@
 
   let EXPORT_DATE = ""; // filename-safe data date, set on boot
 
-  // ---- "Update Now" (trigger the GitHub Action) --------------------------
-  const GH_REPO = "aidangilling/accc-register";
-  const GH_ACTION_URL = `https://github.com/${GH_REPO}/actions/workflows/update.yml`;
-
-  function showUpdateModal() {
-    // Open the workflow page (only someone signed in with repo access can run it).
-    window.open(GH_ACTION_URL, "_blank", "noopener");
-
-    let overlay = document.getElementById("update-modal");
-    if (overlay) overlay.remove();
-    overlay = document.createElement("div");
-    overlay.id = "update-modal";
-    overlay.className = "modal-overlay";
-    overlay.innerHTML = `
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="update-modal-title">
-        <h3 id="update-modal-title">Refresh the register data</h3>
-        <p>A GitHub tab has just opened. To pull the latest ACCC data:</p>
-        <ol>
-          <li>On that GitHub page, click <strong>Run workflow</strong> (grey button, upper right), then <strong>Run workflow</strong> again (green) to confirm.</li>
-          <li>Wait about <strong>1–2 minutes</strong> for the run to finish (it shows a green ✓).</li>
-          <li>Come back here and click <strong>Reload this page</strong> below.</li>
-        </ol>
-        <p class="modal-note">You need to be signed in to GitHub with access to this repository. If the tab didn't open, use the button below.</p>
-        <div class="modal-actions">
-          <button type="button" class="tbl-btn" data-act="open">Open GitHub again</button>
-          <button type="button" class="tbl-btn tbl-btn--primary" data-act="reload">Reload this page</button>
-          <button type="button" class="tbl-btn" data-act="close">Close</button>
-        </div>
-      </div>`;
-    document.body.appendChild(overlay);
-    overlay.addEventListener("click", (e) => {
-      const act = e.target && e.target.getAttribute("data-act");
-      if (e.target === overlay || act === "close") overlay.remove();
-      else if (act === "reload") location.reload();
-      else if (act === "open") window.open(GH_ACTION_URL, "_blank", "noopener");
-    });
-  }
-
-  // Simple result modal (title + message + Reload/Close).
-  function showResultModal(title, message, opts) {
-    opts = opts || {};
-    let overlay = document.getElementById("update-modal");
-    if (overlay) overlay.remove();
-    overlay = document.createElement("div");
-    overlay.id = "update-modal";
-    overlay.className = "modal-overlay";
-    const actions = opts.busy
-      ? `<button type="button" class="tbl-btn" data-act="close">Close</button>`
-      : `<button type="button" class="tbl-btn tbl-btn--primary" data-act="reload">Reload this page</button><button type="button" class="tbl-btn" data-act="close">Close</button>`;
-    overlay.innerHTML = `
-      <div class="modal" role="dialog" aria-modal="true">
-        <h3>${esc(title)}</h3>
-        <p>${esc(message)}</p>
-        <div class="modal-actions">${actions}</div>
-      </div>`;
-    document.body.appendChild(overlay);
-    overlay.addEventListener("click", (e) => {
-      const act = e.target && e.target.getAttribute("data-act");
-      if (e.target === overlay || act === "close") overlay.remove();
-      else if (act === "reload") location.reload();
-    });
-  }
-
-  // If a public update endpoint is configured, trigger it; otherwise fall back
-  // to opening GitHub's "Run workflow" page.
-  function handleUpdateNow() {
-    const endpoint = (window.ACCC_UPDATE_ENDPOINT || "").trim();
-    if (!endpoint || /PASTE|YOUR_|example\.com/i.test(endpoint)) {
-      showUpdateModal();
-      return;
-    }
-    showResultModal("Refreshing the register", "Starting the update…", { busy: true });
-    fetch(endpoint, { method: "POST" })
-      .then((r) => r.json().catch(() => ({ message: "Update requested. Reload in 1–2 minutes." })))
-      .then((j) =>
-        showResultModal(
-          "Refreshing the register",
-          j.message || "Update requested. Reload the page in 1–2 minutes.",
-          {}
-        )
-      )
-      .catch(() =>
-        showResultModal(
-          "Couldn't reach the updater",
-          "Please try again in a moment, or reload the page.",
-          {}
-        )
-      );
-  }
-
   // ---- Excel (.xlsx) export (self-contained, no dependencies) ------------
   function xmlEsc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
@@ -559,7 +469,6 @@
         </table>
       </div>
       <div class="table-actions">
-        <button type="button" class="tbl-btn tbl-btn--update" title="Fetch the latest ACCC data">&#8635;&nbsp;Update Now</button>
         <button type="button" class="tbl-btn tbl-btn--export" title="Download this table as Excel">&#8681;&nbsp;Export to Excel</button>
       </div>`;
 
@@ -651,8 +560,7 @@
       redraw();
     });
 
-    // Bottom-right actions: Update Now + Export to Excel.
-    host.querySelector(".tbl-btn--update").addEventListener("click", handleUpdateNow);
+    // Bottom-right action: Export to Excel.
     host.querySelector(".tbl-btn--export").addEventListener("click", () => {
       const rows = filtered(); // current view — respects filters + sort
       const headers = cols.map((c) => c.label);
