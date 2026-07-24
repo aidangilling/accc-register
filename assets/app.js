@@ -56,6 +56,156 @@
 
   const isNum = (v) => typeof v === "number" && isFinite(v);
 
+  let EXPORT_DATE = ""; // filename-safe data date, set on boot
+
+  // ---- "Update Now" (trigger the GitHub Action) --------------------------
+  const GH_REPO = "aidangilling/accc-register";
+  const GH_ACTION_URL = `https://github.com/${GH_REPO}/actions/workflows/update.yml`;
+
+  function showUpdateModal() {
+    // Open the workflow page (only someone signed in with repo access can run it).
+    window.open(GH_ACTION_URL, "_blank", "noopener");
+
+    let overlay = document.getElementById("update-modal");
+    if (overlay) overlay.remove();
+    overlay = document.createElement("div");
+    overlay.id = "update-modal";
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = `
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="update-modal-title">
+        <h3 id="update-modal-title">Refresh the register data</h3>
+        <p>A GitHub tab has just opened. To pull the latest ACCC data:</p>
+        <ol>
+          <li>On that GitHub page, click <strong>Run workflow</strong> (grey button, upper right), then <strong>Run workflow</strong> again (green) to confirm.</li>
+          <li>Wait about <strong>1–2 minutes</strong> for the run to finish (it shows a green ✓).</li>
+          <li>Come back here and click <strong>Reload this page</strong> below.</li>
+        </ol>
+        <p class="modal-note">You need to be signed in to GitHub with access to this repository. If the tab didn't open, use the button below.</p>
+        <div class="modal-actions">
+          <button type="button" class="tbl-btn" data-act="open">Open GitHub again</button>
+          <button type="button" class="tbl-btn tbl-btn--primary" data-act="reload">Reload this page</button>
+          <button type="button" class="tbl-btn" data-act="close">Close</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", (e) => {
+      const act = e.target && e.target.getAttribute("data-act");
+      if (e.target === overlay || act === "close") overlay.remove();
+      else if (act === "reload") location.reload();
+      else if (act === "open") window.open(GH_ACTION_URL, "_blank", "noopener");
+    });
+  }
+
+  // ---- Excel (.xlsx) export (self-contained, no dependencies) ------------
+  function xmlEsc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;",
+    }[c]));
+  }
+  const _crcTable = (function () {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(b) {
+    let c = 0xffffffff;
+    for (let i = 0; i < b.length; i++) c = _crcTable[(c ^ b[i]) & 0xff] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
+  }
+  function zipStore(files) {
+    const u16 = (n) => [n & 255, (n >> 8) & 255];
+    const u32 = (n) => [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >> 24) & 255];
+    const parts = [], central = [];
+    let offset = 0;
+    for (const f of files) {
+      const name = f.name, data = f.bytes, crc = crc32(data), size = data.length;
+      const lh = [80, 75, 3, 4, ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0)];
+      parts.push(new Uint8Array(lh), name, data);
+      const cd = [80, 75, 1, 2, ...u16(20), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(crc), ...u32(size), ...u32(size), ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(offset)];
+      central.push(new Uint8Array(cd), name);
+      offset += lh.length + name.length + size;
+    }
+    let csize = 0;
+    central.forEach((c) => (csize += c.length));
+    const eocd = [80, 75, 5, 6, ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(csize), ...u32(offset), ...u16(0)];
+    const all = [...parts, ...central, new Uint8Array(eocd)];
+    let total = 0;
+    all.forEach((a) => (total += a.length));
+    const out = new Uint8Array(total);
+    let p = 0;
+    for (const a of all) { out.set(a, p); p += a.length; }
+    return out;
+  }
+  function colLetter(i) {
+    let s = "";
+    i++;
+    while (i > 0) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); }
+    return s;
+  }
+  function sheetXml(headers, rows) {
+    const widths = headers.map((h, ci) => {
+      let w = String(h).length;
+      for (const r of rows) { const v = r[ci]; const l = v == null ? 0 : String(v).length; if (l > w) w = l; }
+      return Math.min(Math.max(w + 2, 8), 60);
+    });
+    const cols = "<cols>" + widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join("") + "</cols>";
+    const cell = (ci, ri, v, s) => {
+      const ref = colLetter(ci) + (ri + 1);
+      if (typeof v === "number" && isFinite(v)) return `<c r="${ref}"${s ? ` s="${s}"` : ""}><v>${v}</v></c>`;
+      return `<c r="${ref}" t="inlineStr"${s ? ` s="${s}"` : ""}><is><t xml:space="preserve">${xmlEsc(v)}</t></is></c>`;
+    };
+    let body = `<row r="1">` + headers.map((h, ci) => cell(ci, 0, h, 1)).join("") + `</row>`;
+    rows.forEach((r, ri) => { body += `<row r="${ri + 2}">` + r.map((v, ci) => cell(ci, ri + 1, v, 0)).join("") + `</row>`; });
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${cols}<sheetData>${body}</sheetData></worksheet>`;
+  }
+  function buildXlsx(sheetName, headers, rows) {
+    const enc = new TextEncoder();
+    const safeName = String(sheetName).replace(/[:\\/?*\[\]]/g, " ").slice(0, 31);
+    const files = [
+      { name: "[Content_Types].xml", str: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>` },
+      { name: "_rels/.rels", str: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>` },
+      { name: "xl/workbook.xml", str: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${xmlEsc(safeName)}" sheetId="1" r:id="rId1"/></sheets></workbook>` },
+      { name: "xl/_rels/workbook.xml.rels", str: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` },
+      { name: "xl/styles.xml", str: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>` },
+      { name: "xl/worksheets/sheet1.xml", str: sheetXml(headers, rows) },
+    ];
+    return zipStore(files.map((f) => ({ name: enc.encode(f.name), bytes: enc.encode(f.str) })));
+  }
+  function downloadXlsx(filename, sheetName, headers, rows) {
+    const bytes = buildXlsx(sheetName, headers, rows);
+    const blob = new Blob([bytes], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
+  }
+
+  // The exact value shown in each table cell (plain text, for export).
+  function exportValue(key, r) {
+    switch (key) {
+      case "caseTitle": return r.caseTitle || "";
+      case "reviewComplete": return r.reviewComplete ? "Yes" : "No";
+      case "determinationOutcome": return r.determinationOutcome || "—";
+      case "status": return r.status || "—";
+      case "stage": return r.stage || "—";
+      case "effectiveDate": return fmtDate(r.effectiveDate) || "—";
+      case "determinationDate": return fmtDate(r.determinationDate) || "—";
+      case "publicationDate": return fmtDate(r.publicationDate) || "—";
+      case "durationBusinessDays":
+        return isNum(r.durationBusinessDays) ? r.durationBusinessDays : "—";
+      default: return "";
+    }
+  }
+
   function statusClass(status) {
     const s = (status || "").toLowerCase();
     if (s.includes("under")) return "pill--under";
@@ -327,7 +477,7 @@
   }
 
   // ---- table -------------------------------------------------------------
-  function renderTable(sectionEl, host, records, isNotification, filters) {
+  function renderTable(sectionEl, host, records, isNotification, filters, label) {
     const cols = columns(isNotification);
     const state = { sortKey: "effectiveDate", dir: -1 };
 
@@ -355,6 +505,10 @@
           <thead><tr>${thead}</tr></thead>
           <tbody></tbody>
         </table>
+      </div>
+      <div class="table-actions">
+        <button type="button" class="tbl-btn tbl-btn--update" title="Fetch the latest ACCC data">&#8635;&nbsp;Update Now</button>
+        <button type="button" class="tbl-btn tbl-btn--export" title="Download this table as Excel">&#8681;&nbsp;Export to Excel</button>
       </div>`;
 
     const tbody = host.querySelector("tbody");
@@ -445,6 +599,16 @@
       redraw();
     });
 
+    // Bottom-right actions: Update Now + Export to Excel.
+    host.querySelector(".tbl-btn--update").addEventListener("click", showUpdateModal);
+    host.querySelector(".tbl-btn--export").addEventListener("click", () => {
+      const rows = filtered(); // current view — respects filters + sort
+      const headers = cols.map((c) => c.label);
+      const data = rows.map((r) => cols.map((c) => exportValue(c.key, r)));
+      const base = `ACCC ${label}${EXPORT_DATE ? " " + EXPORT_DATE : ""}`;
+      downloadXlsx(base.replace(/\s+/g, "_") + ".xlsx", label, headers, data);
+    });
+
     redraw();
     return { redraw };
   }
@@ -481,7 +645,7 @@
 
     const tableHost = document.createElement("div");
     el.appendChild(tableHost);
-    const table = renderTable(el, tableHost, records, isNotification, filters);
+    const table = renderTable(el, tableHost, records, isNotification, filters, title);
 
     // Wire the clickable stat rows to the table's filter.
     el.querySelectorAll(".statrow.selectable").forEach((rowEl) => {
@@ -554,6 +718,7 @@
 
     const records = Array.isArray(data.records) ? data.records : [];
     const generatedAt = data.generatedAt || new Date().toISOString();
+    EXPORT_DATE = String(generatedAt).slice(0, 10); // YYYY-MM-DD for filenames
 
     const notifications = records.filter((r) => r.type === "Notification");
     const waivers = records.filter((r) => r.type === "Waiver");
