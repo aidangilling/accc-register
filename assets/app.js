@@ -96,6 +96,58 @@
     });
   }
 
+  // Simple result modal (title + message + Reload/Close).
+  function showResultModal(title, message, opts) {
+    opts = opts || {};
+    let overlay = document.getElementById("update-modal");
+    if (overlay) overlay.remove();
+    overlay = document.createElement("div");
+    overlay.id = "update-modal";
+    overlay.className = "modal-overlay";
+    const actions = opts.busy
+      ? `<button type="button" class="tbl-btn" data-act="close">Close</button>`
+      : `<button type="button" class="tbl-btn tbl-btn--primary" data-act="reload">Reload this page</button><button type="button" class="tbl-btn" data-act="close">Close</button>`;
+    overlay.innerHTML = `
+      <div class="modal" role="dialog" aria-modal="true">
+        <h3>${esc(title)}</h3>
+        <p>${esc(message)}</p>
+        <div class="modal-actions">${actions}</div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", (e) => {
+      const act = e.target && e.target.getAttribute("data-act");
+      if (e.target === overlay || act === "close") overlay.remove();
+      else if (act === "reload") location.reload();
+    });
+  }
+
+  // If a public update endpoint is configured, trigger it; otherwise fall back
+  // to opening GitHub's "Run workflow" page.
+  function handleUpdateNow() {
+    const endpoint = (window.ACCC_UPDATE_ENDPOINT || "").trim();
+    if (!endpoint || /PASTE|YOUR_|example\.com/i.test(endpoint)) {
+      showUpdateModal();
+      return;
+    }
+    showResultModal("Refreshing the register", "Starting the update…", { busy: true });
+    fetch(endpoint, { method: "POST" })
+      .then((r) => r.json().catch(() => ({ message: "Update requested. Reload in 1–2 minutes." })))
+      .then((j) =>
+        showResultModal(
+          "Refreshing the register",
+          j.message || "Update requested. Reload the page in 1–2 minutes.",
+          {}
+        )
+      )
+      .catch(() =>
+        showResultModal(
+          "Couldn't reach the updater",
+          "Please try again in a moment, or reload the page.",
+          {}
+        )
+      );
+  }
+
   // ---- Excel (.xlsx) export (self-contained, no dependencies) ------------
   function xmlEsc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
@@ -600,7 +652,7 @@
     });
 
     // Bottom-right actions: Update Now + Export to Excel.
-    host.querySelector(".tbl-btn--update").addEventListener("click", showUpdateModal);
+    host.querySelector(".tbl-btn--update").addEventListener("click", handleUpdateNow);
     host.querySelector(".tbl-btn--export").addEventListener("click", () => {
       const rows = filtered(); // current view — respects filters + sort
       const headers = cols.map((c) => c.label);
