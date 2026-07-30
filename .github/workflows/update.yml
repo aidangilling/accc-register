@@ -41,6 +41,11 @@ jobs:
       - name: Scrape register and rebuild data.json
         run: npm run scrape
 
+      # NOTE: do NOT put "[skip ci]" in this commit message. Cloudflare Pages
+      # treats it as a skip-build marker, so the site would never redeploy with
+      # the new data. It isn't needed to stop this workflow re-triggering itself
+      # either — there is no `push` trigger above, and pushes made with
+      # GITHUB_TOKEN don't start new workflow runs.
       - name: Commit data.json if it changed
         run: |
           git config user.name  "github-actions[bot]"
@@ -49,7 +54,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to data.json — nothing to commit."
           else
-            git commit -m "chore(data): refresh register data [skip ci]"
+            git commit -m "chore(data): refresh register data"
             git push
             echo "Committed and pushed refreshed data.json."
           fi
