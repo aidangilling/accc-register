@@ -186,12 +186,6 @@
   }
 
   // ---- statistics --------------------------------------------------------
-  function median(nums) {
-    if (!nums.length) return null;
-    const s = nums.slice().sort((a, b) => a - b);
-    const mid = Math.floor(s.length / 2);
-    return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
-  }
 
   function computeStats(records, isNotification) {
     const stats = {
@@ -205,6 +199,7 @@
       stage: { "Phase 1": 0, "Phase 2": 0, "Public benefit": 0 },
       outcome: {},
       durations: [],
+      durationsByPhase: { "Phase 1": [], "Phase 2": [] },
     };
     for (const r of records) {
       if (r.status in stats.status) stats.status[r.status] += 1;
@@ -222,13 +217,19 @@
       // Duration stats: only where a duration is actually computable.
       if (r.reviewComplete && isNum(r.durationBusinessDays)) {
         stats.durations.push(r.durationBusinessDays);
+        const b = stageBucket(r.stage);
+        if (b in stats.durationsByPhase) {
+          stats.durationsByPhase[b].push(r.durationBusinessDays);
+        }
       }
     }
-    const d = stats.durations;
-    stats.avgDuration = d.length
-      ? Math.round((d.reduce((a, b) => a + b, 0) / d.length) * 10) / 10
-      : null;
-    stats.medianDuration = median(d);
+    const avg = (arr) =>
+      arr.length
+        ? Math.round((arr.reduce((a, b) => a + b, 0) / arr.length) * 10) / 10
+        : null;
+    stats.avgDuration = avg(stats.durations);
+    stats.avgDurationPhase1 = avg(stats.durationsByPhase["Phase 1"]);
+    stats.avgDurationPhase2 = avg(stats.durationsByPhase["Phase 2"]);
     return stats;
   }
 
@@ -291,8 +292,13 @@
     groups.push(`
       <div class="statgroup">
         <h3>Completed — duration (business days)</h3>
-        ${plainRow("Average", stats.avgDuration == null ? "—" : stats.avgDuration)}
-        ${plainRow("Median", stats.medianDuration == null ? "—" : stats.medianDuration)}
+        ${
+          isNotification
+            ? plainRow("Phase 1 Average", stats.avgDurationPhase1 == null ? "—" : stats.avgDurationPhase1) +
+              plainRow("Phase 2 Average", stats.avgDurationPhase2 == null ? "—" : stats.avgDurationPhase2)
+            : ""
+        }
+        ${plainRow("Overall Average", stats.avgDuration == null ? "—" : stats.avgDuration)}
       </div>`);
 
     return `<div class="stats">${groups.join("")}</div>`;
