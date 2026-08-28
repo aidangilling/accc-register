@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-28T14:57:36.157Z",
+  "generatedAt": "2026-08-28T20:06:25.156Z",
   "sourceUrl": "https://www.accc.gov.au/public-registers/mergers-and-acquisitions-registers/acquisitions-register",
   "recordCount": 593,
   "records": [
@@ -929,11 +929,11 @@
       "status": "Assessment completed",
       "stage": "",
       "effectiveDate": "2026-07-31",
-      "determinationDate": "2026-08-27",
+      "determinationDate": "2026-08-28",
       "publicationDate": "2026-08-28",
       "determinationOutcome": "Approved",
       "reviewComplete": true,
-      "durationBusinessDays": 19,
+      "durationBusinessDays": 20,
       "overridden": false,
       "overriddenFields": [],
       "notes": ""
