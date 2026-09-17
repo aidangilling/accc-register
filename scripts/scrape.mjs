@@ -33,11 +33,28 @@ const REGISTER_PATH =
   "/public-registers/mergers-and-acquisitions-registers/acquisitions-register";
 const REGISTER_URL = ORIGIN + REGISTER_PATH;
 
-// NOTE: the ACCC's WAF rejects any User-Agent containing the word "bot",
-// so this is a plain, current browser UA. Keep it that way.
+// NOTE: since ~Sept 2026 the ACCC's WAF returns HTTP 403 "Access Denied" to a
+// bare request — it now requires a full, browser-like header set (below). It
+// also rejects any User-Agent containing the word "bot". Keep both in mind.
 const USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " +
-  "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+  "(KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
+
+// A complete Chrome header set. The WAF blocks requests missing these.
+const BROWSER_HEADERS = {
+  "User-Agent": USER_AGENT,
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+  "Accept-Language": "en-AU,en;q=0.9",
+  "sec-ch-ua": '"Chromium";v="140", "Not=A?Brand";v="24"',
+  "sec-ch-ua-mobile": "?0",
+  "sec-ch-ua-platform": '"macOS"',
+  "Sec-Fetch-Dest": "document",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Sec-Fetch-User": "?1",
+  "Upgrade-Insecure-Requests": "1",
+};
 
 const REQUEST_DELAY_MS = 400; // be polite between requests
 const MAX_PAGES = 100; // safety cap on pagination
@@ -58,11 +75,7 @@ async function fetchHtml(url, attempt = 1) {
   const MAX_ATTEMPTS = 3;
   try {
     const res = await fetch(url, {
-      headers: {
-        "User-Agent": USER_AGENT,
-        Accept: "text/html,application/xhtml+xml",
-        "Accept-Language": "en-AU,en;q=0.9",
-      },
+      headers: BROWSER_HEADERS,
       redirect: "follow",
     });
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
@@ -415,7 +428,8 @@ async function main() {
   const listing = [];
   const seen = new Set();
   for (let page = 0; page < MAX_PAGES; page++) {
-    const url = `${REGISTER_URL}?page=${page}`;
+    // The WAF now blocks "?page=0" specifically; the bare URL is page 0.
+    const url = page === 0 ? REGISTER_URL : `${REGISTER_URL}?page=${page}`;
     const html = await fetchHtml(url);
     const rows = parseListing(html);
     if (rows.length === 0) {
